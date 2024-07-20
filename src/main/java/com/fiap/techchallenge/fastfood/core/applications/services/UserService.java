@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.UserRepositoryPort;
+import com.fiap.techchallenge.fastfood.core.applications.ports.UserServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-public class UserService {
+public class UserService implements UserServicePort {
 
     @Autowired
     private UserRepositoryPort userRepositoryPort;
