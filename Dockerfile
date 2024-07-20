@@ -12,7 +12,7 @@ WORKDIR /app
 RUN mvn clean install
 
 # Estágio Final
-FROM openjdk:17-alpine3.14
+FROM openjdk:17-jdk-slim
 
 # Copia o arquivo JAR gerado no estágio de build para o estágio final
 COPY --from=build /app/target/fastfood-0.0.1-SNAPSHOT.jar /app/app.jar
