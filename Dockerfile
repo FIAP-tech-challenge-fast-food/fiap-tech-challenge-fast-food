@@ -23,5 +23,5 @@ WORKDIR /app
 # Expõe a porta 8080 para o contêiner
 EXPOSE 8080
 
-# Comando para executar a aplicação
-CMD ["java", "-jar", "app.jar"]
+# Comando para executar a aplicação com o perfil docker
+CMD ["java", "-jar", "app.jar", "--spring.profiles.active=docker"]
