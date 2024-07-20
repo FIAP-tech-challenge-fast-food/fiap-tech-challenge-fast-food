@@ -1,13 +1,14 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.CategoryRepositoryPort;
+import com.fiap.techchallenge.fastfood.core.applications.ports.CategoryServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class CategoryService {
+public class CategoryService implements CategoryServicePort {
 
     private final CategoryRepositoryPort categoryRepositoryPort;
 
