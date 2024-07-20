@@ -1,14 +1,15 @@
 package com.fiap.techchallenge.fastfood.core.domain;
 
 public class Category {
-    public Category(Long id, String description) {
-        this.id = id;
-        this.description = description;
-    }
 
     private Long id;
 
     private String description;
+
+    public Category(Long id, String description) {
+        this.id = id;
+        this.description = description;
+    }
 
     public String getDescription() {
         return description;
