@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra.entities;
 
-import com.fiap.techchallenge.fastfood.core.domain.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +22,9 @@ public class ProductEntity implements Serializable {
 
     private String name;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity category;
 
     private Double price;
 }
