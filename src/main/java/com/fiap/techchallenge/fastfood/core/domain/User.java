@@ -18,7 +18,11 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public User(String name, String email, String cpf, LocalDateTime now) {
+    public User(String name, String email, String cpf, LocalDateTime createdAt) {
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
