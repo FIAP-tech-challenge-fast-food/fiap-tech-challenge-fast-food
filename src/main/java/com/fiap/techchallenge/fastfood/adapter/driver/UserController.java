@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.UserDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.UserMapperDto;
-import com.fiap.techchallenge.fastfood.core.applications.services.UserService;
+import com.fiap.techchallenge.fastfood.core.applications.ports.UserServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.User;
 
 @RestController
@@ -20,15 +20,12 @@ import com.fiap.techchallenge.fastfood.core.domain.User;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServicePort userServicePort;
 
     @PostMapping
     public ResponseEntity<UserDto> register(@RequestBody UserDto user) {
-        User createdUser = userService.register(UserMapperDto.toDomain(user));
+        User createdUser = userServicePort.register(UserMapperDto.toDomain(user));
 
-        /**
-         * Forma adequada para retornar servços CREATED
-         */
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(createdUser.getId()).toUri();
 
@@ -37,7 +34,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
-        List<User> users = userService.findAll();
+        List<User> users = userServicePort.findAll();
         List<UserDto> usersDtos = users.stream().map(UserMapperDto::toDto).collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(usersDtos);
@@ -45,13 +42,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable Long id) {
-        User user = userService.findById(id);
+        User user = userServicePort.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
     }
 
     @GetMapping("/email")
     public ResponseEntity<UserDto> findByEmail(@RequestParam String email) {
-        User user = userService.findByEmail(email);
+        User user = userServicePort.findByEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
     }
 }
