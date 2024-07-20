@@ -11,6 +11,8 @@ services:
       MYSQL_PASSWORD: user_password
     ports:
       - "3306:3306"
+    networks:
+      - fastfood
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -21,8 +23,17 @@ services:
     container_name: app_container
     ports:
       - "8080:8080"
+    networks:
+      - fastfood
     depends_on:
       - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/database?autoReconnect=true&useSSL=false
+
+networks:
+  fastfood:
+    driver: bridge
+    name: fastfood
 
 volumes:
   mysql_data:
