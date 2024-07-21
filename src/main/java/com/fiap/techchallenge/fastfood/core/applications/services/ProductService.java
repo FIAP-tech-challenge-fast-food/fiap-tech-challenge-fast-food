@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
+import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ProductService {
+public class ProductService implements ProductServicePort {
 
     @Autowired
     private ProductRepositoryPort productRepositoryPort;
