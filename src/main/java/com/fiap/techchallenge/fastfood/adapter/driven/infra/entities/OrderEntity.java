@@ -29,6 +29,7 @@ public class OrderEntity implements Serializable {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @Column(name="order_status")
     private OrderStatus orderStatus = OrderStatus.WAITING_PAYMENT;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
