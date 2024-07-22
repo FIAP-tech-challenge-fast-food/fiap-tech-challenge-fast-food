@@ -14,5 +14,4 @@ public interface ProductRepositoryPort {
     Product findById(Long id);
 
     List<Product> findByCategoryId(Long categoryId);
-
 }

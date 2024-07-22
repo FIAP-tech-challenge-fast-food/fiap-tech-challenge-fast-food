@@ -16,6 +16,8 @@ public class PaymentService implements PaymentServicePort {
 
     @Override
     public Payment registerPayment(Payment payment) {
+        //TODO: ATUALIZAR STATUS DO ORDER
+
         return this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder(), payment.getCreatedAt());
     }
 

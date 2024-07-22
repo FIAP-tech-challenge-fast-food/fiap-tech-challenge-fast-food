@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers;
 
+import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.PaymentEntity;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
@@ -13,9 +14,9 @@ public class PaymentMapper {
 
         Order order = null;
 
-        // if (paymentEntity.getOrder() != null) {
-        //     order = new Order();
-        // }
+        if (paymentEntity.getOrder() != null) {
+            order = OrderMapper.toDomain(paymentEntity.getOrder());
+        }
 
         return new Payment(
                 paymentEntity.getId(),
@@ -29,19 +30,17 @@ public class PaymentMapper {
             return null;
         }
         
-        Order order = null;
+        OrderEntity order = null;
 
-        // if (paymentEntity.getOrder() != null) {
-        //     order = new Order();
-        // }
+        if (payment.getOrder() != null) {
+            order = OrderMapper.toEntity(payment.getOrder());
+        }
 
-        // return new PaymentEntity(
-        //         payment.getId(),
-        //         payment.getExternalReference(),
-        //         order,
-        //         payment.getCreatedAt());
-        
-        return null;
+        return new PaymentEntity(
+                payment.getId(),
+                payment.getExternalReference(),
+                order,
+                payment.getCreatedAt());
     }
 
 }

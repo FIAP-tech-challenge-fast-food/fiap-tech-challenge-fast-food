@@ -31,9 +31,9 @@ public class PaymentMapperDto {
 
         // OrderDto orderDto = null;
         
-        // if (payment.getOrder() != null) {
+        if (payment.getOrder() != null) {
 
-        // }
+        }
 
         return new PaymentDto(
                 payment.getId(), 

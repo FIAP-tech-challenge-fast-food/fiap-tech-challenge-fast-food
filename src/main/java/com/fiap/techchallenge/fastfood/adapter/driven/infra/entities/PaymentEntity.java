@@ -24,9 +24,9 @@ public class PaymentEntity implements Serializable {
 
     private String externalReference;
 
-    // @ManyToOne
-    // @JoinColumn(name = "order_id")
-    // private OrderEntity order;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private OrderEntity order;
 
     private Date createdAt;
 
