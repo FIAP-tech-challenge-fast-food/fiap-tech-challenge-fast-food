@@ -14,11 +14,4 @@ public class UserDto {
     private String email;
     private String cpf;
     private LocalDateTime createdAt;
-
-    public UserDto(String name, String email, String cpf, LocalDateTime createdAt) {
-        this.name = name;
-        this.email = email;
-        this.cpf = cpf;
-        this.createdAt = createdAt;
-    }
 }

@@ -15,15 +15,29 @@ import com.fiap.techchallenge.fastfood.adapter.driver.mappers.UserMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.UserServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.User;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
+
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User Management", description = "Operations related to user management")
 public class UserController {
 
     @Autowired
     private UserServicePort userServicePort;
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody UserDto user) {
+    @Operation(summary = "Create a new user", description = "Register a new user in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+    })
+    public ResponseEntity<UserDto> register(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User details to be created", required = true) @RequestBody UserDto user) {
+
         User createdUser = userServicePort.register(UserMapperDto.toDomain(user));
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -33,6 +47,8 @@ public class UserController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all users", description = "Retrieve a list of all users")
+    @ApiResponse(responseCode = "200", description = "List of users retrieved successfully")
     public ResponseEntity<List<UserDto>> findAll() {
         List<User> users = userServicePort.findAll();
         List<UserDto> usersDtos = users.stream().map(UserMapperDto::toDto).collect(Collectors.toList());
@@ -41,13 +57,27 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
+    @Operation(summary = "Get user by ID", description = "Retrieve a user by their unique ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    public ResponseEntity<UserDto> findById(
+            @Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable Long id) {
+
         User user = userServicePort.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
     }
 
     @GetMapping("/email")
-    public ResponseEntity<UserDto> findByEmail(@RequestParam String email) {
+    @Operation(summary = "Get user by email", description = "Retrieve a user by their email address")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    public ResponseEntity<UserDto> findByEmail(
+            @Parameter(description = "Email address of the user to be retrieved", required = true) @RequestParam String email) {
+
         User user = userServicePort.findByEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
     }
