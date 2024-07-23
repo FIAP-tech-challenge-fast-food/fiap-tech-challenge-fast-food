@@ -4,11 +4,11 @@ public class MiscValidator {
 
     public static void validateId(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("Order ID cannot be null");
+            throw new IllegalArgumentException("ID cannot be null");
         }
 
         if (id <= 0) {
-            throw new IllegalArgumentException("Order ID must be positive");
+            throw new IllegalArgumentException("ID must be positive");
         }
     }
 
