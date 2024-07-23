@@ -4,7 +4,7 @@
 
 - Douglas da Silva Vulcano - RM: 357602 - Discord: @.vulcanow
 - Danielle Emygdio - RM: 357942 - Discord: @daniemygdio
-- Kayo Alves - RM: 357921 - Discord: @kayseven
+- Kaio Alves - RM: 357921 - Discord: @kaioseven
 - Vinicius Saraiva - RM: 357461 - Discord: @viniciussaraiva\_
 
 ## Como iniciar com Docker:
