@@ -1,6 +1,6 @@
 package com.fiap.techchallenge.fastfood.core.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Payment {
 
@@ -10,19 +10,19 @@ public class Payment {
 
     private Order order;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     public Payment() {
     }
 
-    public Payment(Long id, String externalReference, Order order, Date createdAt) {
+    public Payment(Long id, String externalReference, Order order, LocalDateTime createdAt) {
         this.id = id;
         this.externalReference = externalReference;
         this.order = order;
         this.createdAt = createdAt;
     }
 
-    public Payment(String externalReference, Order order, Date createdAt) {
+    public Payment(String externalReference, Order order, LocalDateTime createdAt) {
         this.externalReference = externalReference;
         this.order = order;
         this.createdAt = createdAt;
@@ -46,10 +46,10 @@ public class Payment {
     public void setOrder(Order order) {
         this.order = order;
     }
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
