@@ -22,14 +22,4 @@ public class OrderItemValidator {
         }
     }
 
-    public static void validateOrderId(Long orderId) {
-        if (orderId == null) {
-            throw new IllegalArgumentException("Order ID cannot be null");
-        }
-
-        if (orderId <= 0) {
-            throw new IllegalArgumentException("Order ID must be positive");
-        }
-    }
-
 }
