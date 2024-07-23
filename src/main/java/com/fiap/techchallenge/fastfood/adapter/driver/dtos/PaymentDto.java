@@ -1,6 +1,6 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.dtos;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 
@@ -19,6 +19,6 @@ public class PaymentDto {
 
     private Order order;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
 }

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fiap.techchallenge.fastfood.core.applications.services.CategoryService;
+import com.fiap.techchallenge.fastfood.core.applications.services.OrderItemService;
 import com.fiap.techchallenge.fastfood.core.applications.services.PaymentService;
 import com.fiap.techchallenge.fastfood.core.applications.services.ProductService;
 import com.fiap.techchallenge.fastfood.core.applications.services.OrderService;
@@ -27,13 +28,20 @@ public class BeansConfig {
     public CategoryServicePort categoryServiceImpl(CategoryRepositoryPort categoryRepositoryPort) {
         return new CategoryService(categoryRepositoryPort);
     }
-        @Bean
+    
+    @Bean
     public OrderServicePort orderServiceImpl(OrderRepositoryPort orderRepositoryPort) {
         return new OrderService(orderRepositoryPort);
     }
 
     @Bean
-    public PaymentServicePort paymentServiceImpl(PaymentRepositoryPort PaymentRepositoryPort) {
-        return new PaymentService(PaymentRepositoryPort);
+    public OrderItemServicePort orderItemServiceImpl(OrderItemRepositoryPort orderItemRepositoryPort) {
+        return new OrderItemService(orderItemRepositoryPort);
     }
+
+    @Bean
+    public PaymentServicePort paymentServiceImpl(PaymentRepositoryPort paymentRepositoryPort, OrderRepositoryPort orderRepositoryPort) {
+        return new PaymentService(paymentRepositoryPort, orderRepositoryPort);
+    }
+    
 }

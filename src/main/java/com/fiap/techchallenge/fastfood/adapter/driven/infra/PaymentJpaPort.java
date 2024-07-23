@@ -1,11 +1,12 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.PaymentEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.PaymentMapper;
@@ -14,13 +15,14 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepository
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
+@Component
 public class PaymentJpaPort implements PaymentRepositoryPort {
     
     @Autowired
     private PaymentRepository paymentRepository;
 
     @Override
-    public Payment registerPayment(String externalReference, Order order, Date createdAt) {
+    public Payment registerPayment(String externalReference, Order order, LocalDateTime createdAt) {
         PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(new Payment(externalReference, order, createdAt)));
 
         return PaymentMapper.toDomain(paymentEntity);

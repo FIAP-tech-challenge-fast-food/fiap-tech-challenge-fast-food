@@ -3,7 +3,6 @@ package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.UserEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderMapper;
-import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.ProductMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.*;
@@ -37,10 +36,11 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     public List<Order> findByStatus(OrderStatus orderStatus) {
-        var orderEntities = this.orderRepository.findByStatus(orderStatus);
-
+        var orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
+    
         return orderEntities.stream().map(OrderMapper::toDomain).collect(Collectors.toList());
     }
+    
 
     @Override
     public List<Order> findByUserId(Long userId) {
