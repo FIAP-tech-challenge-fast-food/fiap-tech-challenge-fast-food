@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemServicePort;
+import com.fiap.techchallenge.fastfood.core.applications.services.validation.MiscValidator;
+import com.fiap.techchallenge.fastfood.core.applications.services.validation.OrderItemValidator;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 
 public class OrderItemService implements OrderItemServicePort {
@@ -16,6 +18,8 @@ public class OrderItemService implements OrderItemServicePort {
 
     @Override
     public void register(OrderItem orderItem) {
+        OrderItemValidator.validate(orderItem);
+
         calculatePrice(orderItem);
 
         this.orderItemRepositoryPort.register(orderItem.getProduct(), orderItem.getOrder(), orderItem.getPrice(), orderItem.getQuantity());
@@ -23,6 +27,8 @@ public class OrderItemService implements OrderItemServicePort {
 
     @Override
     public List<OrderItem> findByOrderId(Long orderId) {
+        MiscValidator.validateId(orderId);
+
         return this.orderItemRepositoryPort.findByOrderId(orderId);
     }
 
