@@ -1,14 +1,21 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
+import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderItemEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.UserEntity;
+import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderItemMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderMapper;
+import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderItemRepository;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
-import com.fiap.techchallenge.fastfood.core.domain.*;
+import com.fiap.techchallenge.fastfood.core.domain.Order;
+import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
+import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
+import com.fiap.techchallenge.fastfood.core.domain.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,35 +27,47 @@ public class OrderJpaPort implements OrderRepositoryPort {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Override
-    public void generateOrder(User user, List<OrderItem> orderItems) {
-        OrderEntity createdOrder = this.orderRepository.save(OrderMapper.toEntity(new Order(user, orderItems)));
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
-        // TODO: Create a method to save order items with the retrieved order in the createdOrder
+    @Override
+    @Transactional
+    public void generateOrder(User user, List<OrderItem> orderItems) {
+        OrderEntity createdOrder = this.orderRepository.save(OrderMapper.toEntity(new Order(user)));
+
+        List<OrderItemEntity> orderItemsEntities = orderItems.stream()
+                .map(orderItem -> {
+                    OrderItemEntity orderItemEntity = OrderItemMapper.toEntity(orderItem);
+                    orderItemEntity.setOrder(createdOrder);
+                    return orderItemEntity;
+                })
+                .collect(Collectors.toList());
+
+        this.orderItemRepository.saveAll(orderItemsEntities);
     }
 
     @Override
     public Order findById(Long id) {
         OrderEntity orderEntity = this.orderRepository.getReferenceById(id);
+        List<OrderItemEntity> orderItemsEntities = this.orderItemRepository.findByOrderId(orderEntity.getId());
 
-        return OrderMapper.toDomain(orderEntity);
+        return OrderMapper.toDomain(orderEntity, orderItemsEntities);
     }
 
     @Override
     public List<Order> findByStatus(OrderStatus orderStatus) {
-        var orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
-    
-        return orderEntities.stream().map(OrderMapper::toDomain).collect(Collectors.toList());
+        List<OrderEntity> orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
+
+        return mapToOrdersWithItems(orderEntities);
     }
-    
 
     @Override
     public List<Order> findByUserId(Long userId) {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(userId);
-        var orderEntities = this.orderRepository.findByUser(userEntity);
+        List<OrderEntity> orderEntities = this.orderRepository.findByUser(userEntity);
 
-        return orderEntities.stream().map(OrderMapper::toDomain).collect(Collectors.toList());
+        return mapToOrdersWithItems(orderEntities);
     }
 
     @Override
@@ -62,5 +81,18 @@ public class OrderJpaPort implements OrderRepositoryPort {
         } else {
             throw new EntityNotFoundException("Order with id " + orderId + " not found");
         }
+    }
+
+    private List<Order> mapToOrdersWithItems(List<OrderEntity> orderEntities) {
+        if (orderEntities == null) {
+            return null;
+        }
+
+        return orderEntities.stream()
+                .map(orderEntity -> {
+                    List<OrderItemEntity> orderItemsEntities = this.orderItemRepository.findByOrderId(orderEntity.getId());
+                    return OrderMapper.toDomain(orderEntity, orderItemsEntities);
+                })
+                .collect(Collectors.toList());
     }
 }
