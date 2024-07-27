@@ -48,4 +48,13 @@ public class UserJpaPort implements UserRepositoryPort {
                 .map(UserMapper::toDomain)
                 .orElse(null);
     }
+
+    @Override
+    public User findByCpf(String cpf) {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getCpf().equals(cpf))
+                .findFirst()
+                .map(UserMapper::toDomain)
+                .orElse(null);
+    }
 }
