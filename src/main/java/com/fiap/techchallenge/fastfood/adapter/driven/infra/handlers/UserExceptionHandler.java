@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.fastfood.core.exceptions.handlers;
+package com.fiap.techchallenge.fastfood.adapter.driven.infra.handlers;
 
 import com.fiap.techchallenge.fastfood.core.exceptions.CpfAlreadyExistsException;
 import com.fiap.techchallenge.fastfood.core.exceptions.DefaultExceptionBody;
