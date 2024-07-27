@@ -20,8 +20,8 @@ public class ProductMapper {
         }
 
         return new Product(
-                productEntity.getId(),
                 productEntity.getName(),
+                productEntity.getDescription(),
                 category,
                 productEntity.getPrice());
     }
@@ -40,6 +40,7 @@ public class ProductMapper {
 
         return new ProductEntity(
                 product.getId(),
+                product.getDescription(),
                 product.getName(),
                 categoryEntity,
                 product.getPrice());

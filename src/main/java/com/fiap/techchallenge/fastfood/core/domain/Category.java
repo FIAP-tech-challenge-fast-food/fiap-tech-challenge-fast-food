@@ -11,6 +11,10 @@ public class Category {
         this.description = description;
     }
 
+    public Category(Long categoryId) {
+        this.id = categoryId;
+    }
+
     public String getDescription() {
         return description;
     }

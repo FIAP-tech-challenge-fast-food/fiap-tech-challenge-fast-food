@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ProductDto {
-    private Long id;
-    private String name;
-    private CategoryDto category;
-    private Double price;
+    @NotNull private Long id;
+    @NotNull private String name;
+    @NotNull private String description;
+    @NotNull private Long categoryId;
+    @NotNull private Double price;
 }

@@ -20,8 +20,9 @@ public class ProductJpaPort implements ProductRepositoryPort {
     private ProductRepository productRepository;
 
     @Override
-    public void register(String name, String description, Category category, Double price) {
-        this.productRepository.save(ProductMapper.toEntity(new Product(name, description, category, price)));
+    public Product register(Product product) {
+        ProductEntity productEntity = this.productRepository.save(ProductMapper.toEntity(product));
+        return ProductMapper.toDomain(productEntity);
     }
 
     @Override

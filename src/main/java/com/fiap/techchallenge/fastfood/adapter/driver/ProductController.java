@@ -5,6 +5,8 @@ import com.fiap.techchallenge.fastfood.adapter.driver.mappers.ProductMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,10 +35,41 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "No products found for the given category ID")
     })
     public ResponseEntity<List<ProductDto>> findByCategoryId(
-            @Parameter(description = "ID of the category to retrieve products for", required = true) @RequestParam Long categoryId) {
+            @Parameter(description = "ID of the category to retrieve products for", required = true) @RequestParam @Valid @NotNull Long categoryId) {
         List<Product> products = productServicePort.findByCategoryId(categoryId);
         List<ProductDto> productDtos = products.stream().map(ProductMapperDto::toDto).toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(productDtos);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get product by ID", description = "Retrieve a product by their unique ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
+    public ResponseEntity<ProductDto> findById(
+            @Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable @Valid @NotNull Long id
+    ) {
+        Product product = productServicePort.findById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ProductMapperDto.toDto(product));
+    }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Create a new product", description = "Register a new product in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Product created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+    })
+    public ResponseEntity<ProductDto> register(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be created", required = true) @RequestBody @Valid @NotNull ProductDto productDto) {
+
+        Product createdProduct = productServicePort.register(ProductMapperDto.toDomain(productDto));
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(createdProduct.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(ProductMapperDto.toDto(createdProduct));
     }
 }
