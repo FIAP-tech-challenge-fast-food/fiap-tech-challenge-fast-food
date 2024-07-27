@@ -12,4 +12,6 @@ public interface UserServicePort {
     public User findById(Long userId);
 
     public User findByEmail(String email);
+
+    public User findByCpf(String cpf);
 }

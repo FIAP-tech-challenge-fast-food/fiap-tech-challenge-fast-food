@@ -9,11 +9,12 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepository
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
+import com.fiap.techchallenge.fastfood.core.validators.PaymentValidator;
 
 public class PaymentService implements PaymentServicePort {
 
     private PaymentRepositoryPort paymentRepositoryPort;
-    private final OrderRepositoryPort orderRepositoryPort;
+    private OrderRepositoryPort orderRepositoryPort;
 
     @Autowired
     public PaymentService(PaymentRepositoryPort paymentRepositoryPort, OrderRepositoryPort orderRepositoryPort) {
@@ -23,6 +24,8 @@ public class PaymentService implements PaymentServicePort {
 
     @Override
     public Payment registerPayment(Payment payment) {
+        PaymentValidator.validate(payment);
+
         Payment paymentCreated = this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder(), payment.getCreatedAt());
 
         updateOrderStatusAccordingToPayment(payment.getExternalReference(), payment.getOrder().getId());
@@ -36,7 +39,8 @@ public class PaymentService implements PaymentServicePort {
     }
 
     @Override
-    public Payment findByOrderId(Long orderId) {
+    public Payment findByOrderId(Long orderId) {    
+        //TODO: Colocar o validator order
         return this.paymentRepositoryPort.findByOrderId(orderId);
     }
     
