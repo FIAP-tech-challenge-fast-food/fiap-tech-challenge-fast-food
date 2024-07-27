@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
-import com.fiap.techchallenge.fastfood.core.applications.services.validation.MiscValidator;
-import com.fiap.techchallenge.fastfood.core.applications.services.validation.PaymentValidator;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
+import com.fiap.techchallenge.fastfood.core.validators.PaymentValidator;
 
 public class PaymentService implements PaymentServicePort {
 
@@ -40,9 +39,8 @@ public class PaymentService implements PaymentServicePort {
     }
 
     @Override
-    public Payment findByOrderId(Long orderId) {
-        MiscValidator.validateId(orderId);
-
+    public Payment findByOrderId(Long orderId) {    
+        //TODO: Colocar o validator order
         return this.paymentRepositoryPort.findByOrderId(orderId);
     }
     
