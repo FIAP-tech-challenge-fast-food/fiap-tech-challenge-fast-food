@@ -13,4 +13,6 @@ public interface UserRepositoryPort {
     User findById(Long id);
 
     User findByEmail(String email);
+
+    User findByCpf(String cpf);
 }

@@ -4,16 +4,14 @@ import com.fiap.techchallenge.fastfood.adapter.driver.dtos.ProductDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.ProductMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
 
 import java.util.List;
 
