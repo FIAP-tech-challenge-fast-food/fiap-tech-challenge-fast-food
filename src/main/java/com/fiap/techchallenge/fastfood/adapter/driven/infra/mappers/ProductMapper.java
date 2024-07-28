@@ -20,6 +20,7 @@ public class ProductMapper {
         }
 
         return new Product(
+                productEntity.getId(),
                 productEntity.getName(),
                 productEntity.getDescription(),
                 category,

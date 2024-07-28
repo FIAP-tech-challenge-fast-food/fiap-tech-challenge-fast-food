@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping(value = "products", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Product Management", description = "Operations related to product management")
 public class ProductController {
 
@@ -31,8 +31,7 @@ public class ProductController {
     @Operation(summary = "Get products by category ID", description = "Retrieve a list of products by their category ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid category ID provided"),
-            @ApiResponse(responseCode = "404", description = "No products found for the given category ID")
+            @ApiResponse(responseCode = "400", description = "Invalid category ID provided")
     })
     public ResponseEntity<List<ProductDto>> findByCategoryId(
             @Parameter(description = "ID of the category to retrieve products for", required = true) @RequestParam @Valid @NotNull Long categoryId) {
@@ -56,14 +55,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(ProductMapperDto.toDto(product));
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new product", description = "Register a new product in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided")
     })
     public ResponseEntity<ProductDto> register(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be created", required = true) @RequestBody @Valid @NotNull ProductDto productDto) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be created", required = true)
+            @RequestBody @Valid @NotNull ProductDto productDto) {
 
         Product createdProduct = productServicePort.register(ProductMapperDto.toDomain(productDto));
 

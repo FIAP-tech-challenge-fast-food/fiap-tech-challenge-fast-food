@@ -1,9 +1,11 @@
 package com.fiap.techchallenge.fastfood.core.validators;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
+import com.fiap.techchallenge.fastfood.core.domain.Category;
+import com.fiap.techchallenge.fastfood.core.domain.Product;
 import com.fiap.techchallenge.fastfood.core.exceptions.InvalidPriceException;
-import com.fiap.techchallenge.fastfood.core.exceptions.ProductNotFoundInCategoryException;
 import com.fiap.techchallenge.fastfood.core.exceptions.UserNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 public class ProductValidator {
 
@@ -14,20 +16,13 @@ public class ProductValidator {
     }
 
     public void validateProductExistsById(Long userId) {
-        if (productRepositoryPort.findById(userId) == null) {
+        try {
+            if (productRepositoryPort.findById(userId) == null) {
+                throw new UserNotFoundException(userId);
+            }
+        } catch (EntityNotFoundException e) {
             throw new UserNotFoundException(userId);
         }
     }
 
-    public void validateProductExistsByCategoryId(Long categoryId) {
-        if (productRepositoryPort.findByCategoryId(categoryId) == null) {
-            throw new ProductNotFoundInCategoryException(categoryId);
-        }
-    }
-
-    public void validateProductPrice(Double price) {
-        if(price < 0) {
-            throw new InvalidPriceException(price);
-        }
-    }
 }

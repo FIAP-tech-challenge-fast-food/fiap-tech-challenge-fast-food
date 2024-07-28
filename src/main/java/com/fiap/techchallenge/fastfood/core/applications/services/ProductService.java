@@ -20,7 +20,6 @@ public class ProductService implements ProductServicePort {
     }
 
     public Product register(Product product) {
-        productValidator.validateProductPrice(product.getPrice());
         return this.productRepositoryPort.register(
                 new Product(product.getName(),
                         product.getDescription(),
@@ -38,7 +37,6 @@ public class ProductService implements ProductServicePort {
     }
 
     public List<Product> findByCategoryId(Long categoryId) {
-        productValidator.validateProductExistsByCategoryId(categoryId);
         return this.productRepositoryPort.findByCategoryId(categoryId);
     }
 }
