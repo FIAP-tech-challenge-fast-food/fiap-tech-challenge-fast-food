@@ -5,16 +5,6 @@ import com.fiap.techchallenge.fastfood.core.domain.Category;
 
 public class CategoryMapperDto {
 
-    public static Category toDomain(CategoryDto categoryDto) {
-        if (categoryDto == null) {
-            return null;
-        }
-
-        return new Category(
-                categoryDto.getId(),
-                categoryDto.getDescription());
-    }
-
     public static CategoryDto toDto(Category category) {
         if (category == null) {
             return null;
@@ -23,5 +13,14 @@ public class CategoryMapperDto {
         return new CategoryDto(
                 category.getId(),
                 category.getDescription());
+    }
+
+    public static Category toDomain(CategoryDto categoryDto) {
+        if (categoryDto == null) {
+            return null;
+        }
+
+        return new Category(
+                categoryDto.getDescription());
     }
 }
