@@ -29,7 +29,7 @@ public class CategoryJpaPort implements CategoryRepositoryPort {
 
     @Override
     public Category getCategoryById(Long id) {
-        CategoryEntity categoryEntity = this.categoryRepository.findById(id).get();
+        CategoryEntity categoryEntity = this.categoryRepository.getReferenceById(id);
         return CategoryMapper.toDomain(categoryEntity);
     }
 

@@ -63,7 +63,7 @@ public class ProductController {
     })
     public ResponseEntity<ProductDto> register(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be created", required = true)
-            @RequestBody @Valid @NotNull ProductDto productDto) {
+            @RequestBody @Valid ProductDto productDto) {
 
         Product createdProduct = productServicePort.register(ProductMapperDto.toDomain(productDto));
 

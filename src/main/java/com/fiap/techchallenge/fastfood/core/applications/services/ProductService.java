@@ -1,9 +1,11 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
+import com.fiap.techchallenge.fastfood.core.applications.ports.CategoryRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
+import com.fiap.techchallenge.fastfood.core.validators.CategoryValidator;
 import com.fiap.techchallenge.fastfood.core.validators.ProductValidator;
 
 import java.util.List;
@@ -14,12 +16,13 @@ public class ProductService implements ProductServicePort {
 
     private final ProductValidator productValidator;
 
-    public ProductService(ProductRepositoryPort productRepositoryPort) {
+    public ProductService(ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort) {
         this.productRepositoryPort = productRepositoryPort;
-        this.productValidator = new ProductValidator(productRepositoryPort);
+        this.productValidator = new ProductValidator(productRepositoryPort, new CategoryValidator(categoryRepositoryPort));
     }
 
     public Product register(Product product) {
+        this.productValidator.validateProduct(product);
         return this.productRepositoryPort.register(
                 new Product(product.getName(),
                         product.getDescription(),

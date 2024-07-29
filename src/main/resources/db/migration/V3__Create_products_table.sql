@@ -3,7 +3,7 @@
 CREATE TABLE products (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    description VARCHAR(200) NOT NULL,
+    description VARCHAR(200),
     price FLOAT NOT NULL,
     category_id BIGINT NOT NULL,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
