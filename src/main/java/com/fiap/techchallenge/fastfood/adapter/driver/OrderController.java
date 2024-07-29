@@ -13,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,17 +23,52 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    OrderServicePort orderServicePort;
+    private OrderServicePort orderServicePort;
 
-    @GetMapping("/{status}")
+    @GetMapping("/{id}")
+    @Operation(summary = "Get order by ID", description = "Retrieve an order by its unique ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "Order ID provided is invalid"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
+    })
+    public ResponseEntity<OrderDto> findById(
+            @Parameter(description = "ID of the order to be retrieved", required = true) @PathVariable Long id) {
+
+        Order order = orderServicePort.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(OrderMapperDto.toDto(order));
+    }
+
+    @GetMapping("/order-status")
     @Operation(summary = "Get all orders by status", description = "Retrieve a list of all orders by status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of orders retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "Order status provided is invalid"),
             @ApiResponse(responseCode = "404", description = "No order was found")
     })
     public ResponseEntity<List<OrderDto>> findByStatus(
-            @Parameter(description = "Status of orders to be retrieved", required = true) @PathVariable OrderStatus orderStatus) {
-        List<Order> orders = orderServicePort.findByStatus(orderStatus);
+            @Parameter(description = "Status of orders to be retrieved", required = true) @RequestParam OrderStatus status) {
+
+        List<Order> orders = orderServicePort.findByStatus(status);
+
+        List<OrderDto> ordersDtos = orders.stream()
+                .map(OrderMapperDto::toDto)
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ordersDtos);
+    }
+
+    @GetMapping("/by-user")
+    @Operation(summary = "Get all orders by user", description = "Retrieve a list of all orders by user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of orders retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "User ID provided is invalid"),
+            @ApiResponse(responseCode = "404", description = "No order was found")
+    })
+    public ResponseEntity<List<OrderDto>> findByUser(
+            @Parameter(description = "User ID of orders to be retrieved", required = true) @RequestParam Long userId) {
+
+        List<Order> orders = orderServicePort.findByUserId(userId);
 
         List<OrderDto> ordersDtos = orders.stream()
                 .map(OrderMapperDto::toDto)
