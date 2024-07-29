@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface OrderServicePort {
 
-    public void generateOrder(User user, List<OrderItem> orderItems);
+    public Order generateOrder(User user, List<OrderItem> orderItems);
 
     public Order findById(Long id);
 

@@ -32,7 +32,7 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     @Transactional
-    public void generateOrder(User user, List<OrderItem> orderItems) {
+    public Order generateOrder(User user, List<OrderItem> orderItems) {
         OrderEntity createdOrder = this.orderRepository.save(OrderMapper.toEntity(new Order(user)));
 
         List<OrderItemEntity> orderItemsEntities = orderItems.stream()
@@ -43,7 +43,9 @@ public class OrderJpaPort implements OrderRepositoryPort {
                 })
                 .collect(Collectors.toList());
 
-        this.orderItemRepository.saveAll(orderItemsEntities);
+        List<OrderItemEntity> orderItemEntities = this.orderItemRepository.saveAll(orderItemsEntities);
+
+        return OrderMapper.toDomain(createdOrder, orderItemEntities);
     }
 
     @Override

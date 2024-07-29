@@ -1,7 +1,10 @@
 package com.fiap.techchallenge.fastfood.adapter.driver;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
+import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.mappers.UserMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
@@ -14,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,6 +29,28 @@ public class OrderController {
 
     @Autowired
     private OrderServicePort orderServicePort;
+
+    @PostMapping
+    @Operation(summary = "Create a new order", description = "Register a new order in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+    })
+    public ResponseEntity<OrderDto> generateOrder(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Order to be created", required = true) @RequestBody CreateOrderRequest request) {
+
+        Order createdOrder = orderServicePort.generateOrder(
+                UserMapperDto.toDomain(request.getUser()),
+                OrderItemMapperDto.mapToDomain(request.getItems())
+        );
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdOrder.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(OrderMapperDto.toDto(createdOrder));
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get order by ID", description = "Retrieve an order by its unique ID")

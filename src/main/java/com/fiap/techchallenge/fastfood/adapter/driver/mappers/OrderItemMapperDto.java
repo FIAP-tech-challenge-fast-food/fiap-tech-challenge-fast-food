@@ -7,6 +7,10 @@ import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class OrderItemMapperDto {
 
     public static OrderItem toDomain(OrderItemDto orderItemDto) {
@@ -53,5 +57,10 @@ public class OrderItemMapperDto {
                 order,
                 orderItem.getPrice(),
                 orderItem.getQuantity());
+    }
+
+    public static List<OrderItem> mapToDomain(List<OrderItemDto> items) {
+        return items != null ?
+                items.stream().map(OrderItemMapperDto::toDomain).collect(Collectors.toList()) : new ArrayList<>();
     }
 }

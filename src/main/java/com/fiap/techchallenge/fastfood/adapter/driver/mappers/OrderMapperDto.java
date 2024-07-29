@@ -34,10 +34,7 @@ public class OrderMapperDto {
                         .mapToDouble(OrderItemDto::getPrice)
                         .sum() : 0.00;
 
-        List<OrderItem> orderItems = orderDto.getOrderItems() != null ?
-                orderDto.getOrderItems().stream()
-                        .map(OrderItemMapperDto::toDomain)
-                        .collect(Collectors.toList()) : new ArrayList<>();
+        List<OrderItem> orderItems = OrderItemMapperDto.mapToDomain(orderDto.getOrderItems());
 
         return new Order(
                 orderDto.getId(),
