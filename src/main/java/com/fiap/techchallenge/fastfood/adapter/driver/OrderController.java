@@ -31,7 +31,7 @@ public class OrderController {
     private OrderServicePort orderServicePort;
 
     @PostMapping
-    @Operation(summary = "Create a new order", description = "Register a new order in the system")
+    @Operation(summary = "Create a new order", description = "Create a new order in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Order created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided")
@@ -102,5 +102,21 @@ public class OrderController {
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(ordersDtos);
+    }
+
+    @PutMapping("/{id}/status")
+    @Operation(summary = "Update an order status", description = "Update the status of an order in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order status updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
+    })
+    public ResponseEntity<OrderDto> updateStatus(
+            @Parameter(description = "ID of the order to update", required = true) @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New order status to be updated", required = true) @RequestBody OrderStatus newStatus) {
+
+        orderServicePort.updateOrderStatus(id, newStatus);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

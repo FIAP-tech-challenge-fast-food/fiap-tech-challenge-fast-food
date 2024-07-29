@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface OrderServicePort {
 
-    public Order generateOrder(User user, List<OrderItem> orderItems);
+    Order generateOrder(User user, List<OrderItem> orderItems);
 
-    public Order findById(Long id);
+    Order findById(Long id);
 
-    public List<Order> findByStatus(OrderStatus orderStatus);
+    List<Order> findByStatus(OrderStatus orderStatus);
 
-    public List<Order> findByUserId(Long userId);
+    List<Order> findByUserId(Long userId);
 
-    public void updateOrderStatus(Long orderId, OrderStatus orderStatus);
+    void updateOrderStatus(Long orderId, OrderStatus orderStatus);
 }
