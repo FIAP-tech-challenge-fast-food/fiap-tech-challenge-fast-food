@@ -5,6 +5,8 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.CategoryMapp
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.CategoryRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.CategoryRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
+import com.fiap.techchallenge.fastfood.core.exceptions.CategoryNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,19 +20,32 @@ public class CategoryJpaPort implements CategoryRepositoryPort {
     private CategoryRepository categoryRepository;
 
     @Override
-    public void insertCategory(Category category) {
-        this.categoryRepository.save(CategoryMapper.toEntity(category));
+    public Category insertCategory(Category category) {
+        CategoryEntity categoryEntity = this.categoryRepository.save(CategoryMapper.toEntity(category));
+        return CategoryMapper.toDomain(categoryEntity);
     }
 
     @Override
-    public void updateCategory(Long categoryId, Category category) {
-        this.categoryRepository.save(CategoryMapper.toEntity(category));
+    public Category updateCategory(Long id, Category category) {
+        CategoryEntity categoryEntity = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id));
+
+        categoryEntity.setDescription(category.getDescription());
+        this.categoryRepository.save(categoryEntity);
+
+        return CategoryMapper.toDomain(categoryEntity);
+    }
+
+    @Override
+    public Category getCategoryByDescription(String description) {
+        CategoryEntity categoryEntity = this.categoryRepository.findByDescription(description).orElse(null);
+        return categoryEntity != null ? CategoryMapper.toDomain(categoryEntity) : null;
     }
 
     @Override
     public Category getCategoryById(Long id) {
-        CategoryEntity categoryEntity = this.categoryRepository.getReferenceById(id);
-        return CategoryMapper.toDomain(categoryEntity);
+        CategoryEntity categoryEntity = this.categoryRepository.findById(id).orElse(null);
+        return categoryEntity != null ? CategoryMapper.toDomain(categoryEntity) : null;
     }
 
     @Override

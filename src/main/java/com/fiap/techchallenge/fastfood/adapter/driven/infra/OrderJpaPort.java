@@ -30,14 +30,12 @@ public class OrderJpaPort implements OrderRepositoryPort {
     @Override
     public Order findById(Long id) {
         OrderEntity orderEntity = this.orderRepository.getReferenceById(id);
-
         return OrderMapper.toDomain(orderEntity);
     }
 
     @Override
     public List<Order> findByStatus(OrderStatus orderStatus) {
         var orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
-    
         return orderEntities.stream().map(OrderMapper::toDomain).collect(Collectors.toList());
     }
     

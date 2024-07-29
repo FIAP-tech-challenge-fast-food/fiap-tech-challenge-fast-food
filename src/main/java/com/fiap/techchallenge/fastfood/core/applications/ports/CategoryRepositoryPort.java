@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface CategoryRepositoryPort {
 
-   void insertCategory(Category category);
+   Category insertCategory(Category category);
 
-   void updateCategory(Long categoryId, Category category);
+   Category updateCategory(Long categoryId, Category category);
+
+   Category getCategoryByDescription(String description);
 
    Category getCategoryById(Long id);
 

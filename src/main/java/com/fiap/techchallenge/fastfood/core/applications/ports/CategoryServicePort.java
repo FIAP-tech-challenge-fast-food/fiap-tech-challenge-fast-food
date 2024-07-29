@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface CategoryServicePort {
 
-   public void insertCategory(Category category);
+   public Category insertCategory(Category category);
 
-   public void updateCategory(Long categoryId, Category category);
+   public Category updateCategory(Long id, Category category);
 
    public Category getCategoryById(Long id);
+
+   public Category getCategoryByDescription(String description);
 
    public List<Category> getAllCategories();
 }

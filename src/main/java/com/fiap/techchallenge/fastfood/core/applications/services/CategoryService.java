@@ -18,16 +18,21 @@ public class CategoryService implements CategoryServicePort {
         this.categoryValidator = new CategoryValidator(categoryRepositoryPort);
     }
 
-    public void insertCategory(Category category) {
-        this.categoryRepositoryPort.insertCategory(category);
+    public Category insertCategory(Category category) {
+        categoryValidator.validateCategoryAlreadyExists(category.getDescription());
+        return this.categoryRepositoryPort.insertCategory(category);
+    }
+    public Category updateCategory(Long id, Category category) {
+        categoryValidator.validateCategoryExistsById(id);
+        return this.categoryRepositoryPort.updateCategory(id, category);
     }
 
-    public void updateCategory(Long categoryId, Category category) {
-        this.categoryRepositoryPort.updateCategory(categoryId, category);
+    public Category getCategoryByDescription(String description) {
+        return this.categoryRepositoryPort.getCategoryByDescription(description);
     }
 
     public Category getCategoryById(Long id) {
-        this.categoryValidator.validateCategoryExists(id);
+        categoryValidator.validateCategoryExistsById(id);
         return this.categoryRepositoryPort.getCategoryById(id);
     }
 

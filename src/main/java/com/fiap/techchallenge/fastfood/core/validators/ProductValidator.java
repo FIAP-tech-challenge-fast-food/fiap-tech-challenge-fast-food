@@ -39,6 +39,6 @@ public class ProductValidator {
         if(categoryId == null) {
             throw new IllegalArgumentException("Category cannot be empty");
         }
-        this.categoryValidator.validateCategoryExists(categoryId);
+        this.categoryValidator.validateCategoryExistsById(categoryId);
     }
 }
