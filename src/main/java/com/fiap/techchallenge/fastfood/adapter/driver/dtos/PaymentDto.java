@@ -2,8 +2,6 @@ package com.fiap.techchallenge.fastfood.adapter.driver.dtos;
 
 import java.time.LocalDateTime;
 
-import com.fiap.techchallenge.fastfood.core.domain.Order;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,7 @@ public class PaymentDto {
 
     private String externalReference;
 
-    private Order order;
+    private Long orderId;
 
     private LocalDateTime createdAt;
 

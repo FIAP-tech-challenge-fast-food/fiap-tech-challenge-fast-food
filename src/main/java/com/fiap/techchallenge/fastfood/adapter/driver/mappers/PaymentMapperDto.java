@@ -13,8 +13,8 @@ public class PaymentMapperDto {
 
         Order order = null;
         
-        if (paymentDto.getOrder() != null) {
-
+        if (paymentDto.getOrderId() != null) {
+            order = new Order(paymentDto.getOrderId());
         }
 
         return new Payment(
@@ -29,16 +29,16 @@ public class PaymentMapperDto {
             return null;
         }
 
-        // OrderDto orderDto = null;
+        Long orderId = null;
         
         if (payment.getOrder() != null) {
-
+            orderId = payment.getOrder().getId();
         }
 
         return new PaymentDto(
                 payment.getId(), 
                 payment.getExternalReference(), 
-                null, 
+                orderId, 
                 payment.getCreatedAt());
     }
 

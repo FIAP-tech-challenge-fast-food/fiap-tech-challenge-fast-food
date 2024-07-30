@@ -22,6 +22,10 @@ public class Order {
     public Order(User user, List<OrderItem> orderItems) {
     }
 
+    public Order(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

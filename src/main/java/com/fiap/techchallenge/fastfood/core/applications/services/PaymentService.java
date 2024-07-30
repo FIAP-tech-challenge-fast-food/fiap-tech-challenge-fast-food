@@ -2,8 +2,6 @@ package com.fiap.techchallenge.fastfood.core.applications.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
@@ -16,7 +14,6 @@ public class PaymentService implements PaymentServicePort {
     private PaymentRepositoryPort paymentRepositoryPort;
     private OrderRepositoryPort orderRepositoryPort;
 
-    @Autowired
     public PaymentService(PaymentRepositoryPort paymentRepositoryPort, OrderRepositoryPort orderRepositoryPort) {
         this.paymentRepositoryPort = paymentRepositoryPort;
         this.orderRepositoryPort = orderRepositoryPort;
