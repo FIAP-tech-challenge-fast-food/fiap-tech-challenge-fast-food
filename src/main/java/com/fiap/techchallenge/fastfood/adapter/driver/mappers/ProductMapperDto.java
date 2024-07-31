@@ -12,17 +12,10 @@ public class ProductMapperDto {
             return null;
         }
 
-        Category category = null;
-        if (productDto.getCategory() != null) {
-            category = new Category(
-                    productDto.getCategory().getId(),
-                    productDto.getCategory().getDescription());
-        }
-
         return new Product(
-                productDto.getId(),
                 productDto.getName(),
-                category,
+                productDto.getDescription(),
+                new Category(productDto.getCategoryId()),
                 productDto.getPrice());
     }
 
@@ -31,17 +24,16 @@ public class ProductMapperDto {
             return null;
         }
 
-        CategoryDto categoryDto = null;
+        Long categoryId = null;
         if (product.getCategory() != null) {
-            categoryDto = new CategoryDto(
-                    product.getCategory().getId(),
-                    product.getCategory().getDescription());
+            categoryId = product.getCategory().getId();
         }
 
         return new ProductDto(
                 product.getId(),
                 product.getName(),
-                categoryDto,
+                product.getDescription(),
+                categoryId,
                 product.getPrice());
     }
 }

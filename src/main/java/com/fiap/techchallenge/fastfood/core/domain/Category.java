@@ -3,6 +3,7 @@ package com.fiap.techchallenge.fastfood.core.domain;
 public class Category {
 
     private Long id;
+
     private String description;
 
     public Category(Long id, String description) {
@@ -12,6 +13,10 @@ public class Category {
 
     public Category(String description) {
         this.description = description;
+    }
+
+    public Category(Long categoryId) {
+        this.id = categoryId;
     }
 
     public String getDescription() {

@@ -10,6 +10,7 @@ import java.util.List;
 public class CategoryService implements CategoryServicePort {
 
     private final CategoryRepositoryPort categoryRepositoryPort;
+
     private final CategoryValidator categoryValidator;
 
     public CategoryService(CategoryRepositoryPort categoryRepositoryPort) {
@@ -21,7 +22,6 @@ public class CategoryService implements CategoryServicePort {
         categoryValidator.validateCategoryAlreadyExists(category.getDescription());
         return this.categoryRepositoryPort.insertCategory(category);
     }
-
     public Category updateCategory(Long id, Category category) {
         categoryValidator.validateCategoryExistsById(id);
         return this.categoryRepositoryPort.updateCategory(id, category);

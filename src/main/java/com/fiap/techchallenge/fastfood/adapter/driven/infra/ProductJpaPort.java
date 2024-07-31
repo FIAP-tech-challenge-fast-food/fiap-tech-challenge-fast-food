@@ -7,6 +7,7 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.Product
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +21,9 @@ public class ProductJpaPort implements ProductRepositoryPort {
     private ProductRepository productRepository;
 
     @Override
-    public void register(String name, String description, Category category, Double price) {
-        this.productRepository.save(ProductMapper.toEntity(new Product(name, description, category, price)));
+    public Product register(Product product) {
+        ProductEntity productEntity = this.productRepository.save(ProductMapper.toEntity(product));
+        return ProductMapper.toDomain(productEntity);
     }
 
     @Override
