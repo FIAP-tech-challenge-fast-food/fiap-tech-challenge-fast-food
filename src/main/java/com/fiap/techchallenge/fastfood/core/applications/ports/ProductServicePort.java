@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductServicePort {
 
-    public void register(String name, String description, Category category, Double price);
+    public Product register(Product product);
 
     public void update(String name, String description, Category category, Double price);
 

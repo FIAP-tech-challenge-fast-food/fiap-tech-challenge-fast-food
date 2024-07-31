@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.infra;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.*;
+import com.fiap.techchallenge.fastfood.core.validators.CategoryValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +21,8 @@ public class BeansConfig {
     }
 
     @Bean
-    public ProductServicePort productServiceImpl(ProductRepositoryPort prodRepositoryPort) {
-        return new ProductService(prodRepositoryPort);
+    public ProductServicePort productServiceImpl(ProductRepositoryPort prodRepositoryPort, CategoryRepositoryPort categoryRepositoryPort) {
+        return new ProductService(prodRepositoryPort, categoryRepositoryPort);
     }
 
     @Bean
