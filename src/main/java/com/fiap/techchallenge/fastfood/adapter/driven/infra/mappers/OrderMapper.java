@@ -1,13 +1,19 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers;
 
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
+import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderItemEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.UserEntity;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
+import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderMapper {
 
-    public static Order toDomain(OrderEntity orderEntity) {
+    public static Order toDomain(OrderEntity orderEntity, List<OrderItemEntity> orderItemsEntities) {
         if (orderEntity == null) {
             return null;
         }
@@ -23,15 +29,23 @@ public class OrderMapper {
             );
         }
 
-        // TODO: Implement method to retrieve the total order value (get the total from the order_items table)
-        double totalPrice = 0.00;
+        double totalPrice = orderItemsEntities != null ?
+                orderItemsEntities.stream()
+                        .mapToDouble(OrderItemEntity::getPrice)
+                        .sum() : 0.00;
+
+        List<OrderItem> orderItems = orderItemsEntities != null ?
+                orderItemsEntities.stream()
+                        .map(OrderItemMapper::toDomain)
+                        .collect(Collectors.toList()) : new ArrayList<>();
 
         return new Order(
                 orderEntity.getId(),
                 user,
                 orderEntity.getOrderStatus(),
                 totalPrice,
-                orderEntity.getCreatedAt()
+                orderEntity.getCreatedAt(),
+                orderItems
         );
     }
 

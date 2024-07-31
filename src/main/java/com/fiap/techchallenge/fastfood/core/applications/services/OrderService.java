@@ -17,8 +17,8 @@ public class OrderService implements OrderServicePort {
         this.orderRepositoryPort = orderRepositoryPort;
     }
 
-    public void generateOrder(User user, List<OrderItem> orderItems) {
-        this.orderRepositoryPort.generateOrder(user, orderItems);
+    public Order generateOrder(User user, List<OrderItem> orderItems) {
+        return this.orderRepositoryPort.generateOrder(user, orderItems);
     }
 
     public Order findById(Long id) {

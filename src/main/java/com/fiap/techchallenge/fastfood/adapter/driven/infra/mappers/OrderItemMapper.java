@@ -22,7 +22,7 @@ public class OrderItemMapper {
         }
 
         if (orderItemEntity.getOrder() != null) {
-            order = OrderMapper.toDomain(orderItemEntity.getOrder());
+            order = OrderMapper.toDomain(orderItemEntity.getOrder(), null);
         }
 
         return new OrderItem(orderItemEntity.getId(), 

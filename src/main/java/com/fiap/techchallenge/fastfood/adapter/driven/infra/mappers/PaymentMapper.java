@@ -15,7 +15,7 @@ public class PaymentMapper {
         Order order = null;
 
         if (paymentEntity.getOrder() != null) {
-            order = OrderMapper.toDomain(paymentEntity.getOrder());
+            order = OrderMapper.toDomain(paymentEntity.getOrder(), null);
         }
 
         return new Payment(
