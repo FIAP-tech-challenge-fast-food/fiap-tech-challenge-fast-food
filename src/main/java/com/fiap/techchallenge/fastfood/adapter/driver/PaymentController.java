@@ -19,26 +19,41 @@ import com.fiap.techchallenge.fastfood.adapter.driver.mappers.PaymentMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.net.URI;
+
+import io.swagger.v3.oas.annotations.*;
 
 @RestController
 @RequestMapping("/payment")
+@Tag(name = "Payment Management", description = "Operations related to payment management")
 public class PaymentController {
 
     @Autowired
     private PaymentServicePort paymentServicePort;
 
     @PostMapping
-    public ResponseEntity<PaymentDto> register(@RequestBody PaymentDto paymentDto) {
+    @Operation(summary = "Register a new payment", description = "Register a new payment in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Payment created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided"),
+    })
+    public ResponseEntity<PaymentDto> register(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be created", required = true) @RequestBody PaymentDto paymentDto) {
         Payment payment = paymentServicePort.registerPayment(PaymentMapperDto.toDomain(paymentDto));
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(payment.getId()).toUri();
+                .buildAndExpand(payment.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(PaymentMapperDto.toDto(payment)); 
+        return ResponseEntity.created(uri).body(PaymentMapperDto.toDto(payment));
     }
 
     @GetMapping
+    @Operation(summary = "Get all payments", description = "Retrieve a list of all payments")
+    @ApiResponse(responseCode = "200", description = "List of payments retrieved successfully")
     public ResponseEntity<List<PaymentDto>> findAll() {
         List<Payment> payments = paymentServicePort.findAll();
         List<PaymentDto> paymentDtos = payments.stream().map(PaymentMapperDto::toDto).collect(Collectors.toList());
@@ -47,13 +62,15 @@ public class PaymentController {
     }
 
     @GetMapping("/order")
-    public ResponseEntity<PaymentDto> findByOrderId(@RequestParam Long orderId) {
-        if (orderId == null || orderId == 0) {
-            throw new IllegalArgumentException("Id is invalid");
-        }
-
+    @Operation(summary = "Get payment by order ID", description = "Retrieve a payment by its order ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Payment retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Payment not found")
+    })
+    public ResponseEntity<PaymentDto> findByOrderId(
+            @Parameter(description = "Order ID of the payment to be retrieved", required = true) @RequestParam Long orderId) {
         Payment payment = paymentServicePort.findByOrderId(orderId);
-       
+
         return ResponseEntity.ok(PaymentMapperDto.toDto(payment));
     }
 
