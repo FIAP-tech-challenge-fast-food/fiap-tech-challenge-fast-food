@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.mappers;
 
-import com.fiap.techchallenge.fastfood.adapter.driver.dtos.CategoryDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.ProductDto;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 import com.fiap.techchallenge.fastfood.core.domain.Category;

@@ -20,6 +20,7 @@ public class UserMapperDto {
         }
 
         return new User(
+                userDto.getId(),
                 userDto.getName(),
                 userDto.getEmail(),
                 userDto.getCpf(),

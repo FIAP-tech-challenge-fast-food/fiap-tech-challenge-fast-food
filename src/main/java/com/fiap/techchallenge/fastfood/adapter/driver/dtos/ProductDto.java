@@ -1,7 +1,5 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.dtos;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

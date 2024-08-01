@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.validation.FieldError;
-import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
@@ -33,10 +31,11 @@ public class ProductExceptionHandler {
         }
 
         @ExceptionHandler(MethodArgumentNotValidException.class)
-        public ResponseEntity<Map<String, List<String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
+        public ResponseEntity<Map<String, List<String>>> handleMethodArgumentNotValidException(
+                        MethodArgumentNotValidException ex,
                         WebRequest request) {
                 List<String> errors = ex.getBindingResult().getFieldErrors()
-                        .stream().map(FieldError::getDefaultMessage).toList();
+                                .stream().map(FieldError::getDefaultMessage).toList();
 
                 return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }
@@ -49,21 +48,21 @@ public class ProductExceptionHandler {
 
         @ExceptionHandler(InvalidPriceException.class)
         public ResponseEntity<DefaultExceptionBody> handleInvalidPriceException(InvalidPriceException ex,
-                                                                                WebRequest request) {
+                        WebRequest request) {
                 DefaultExceptionBody exception = new DefaultExceptionBody(
-                        LocalDateTime.now(),
-                        ex.getMessage(),
-                        request.getDescription(false));
+                                LocalDateTime.now(),
+                                ex.getMessage(),
+                                request.getDescription(false));
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
         }
 
         @ExceptionHandler(RuntimeException.class)
         public ResponseEntity<DefaultExceptionBody> handleRuntimeException(RuntimeException ex,
-                                                                                WebRequest request) {
+                        WebRequest request) {
                 DefaultExceptionBody exception = new DefaultExceptionBody(
-                        LocalDateTime.now(),
-                        ex.getMessage(),
-                        request.getDescription(false));
+                                LocalDateTime.now(),
+                                ex.getMessage(),
+                                request.getDescription(false));
                 log.error("Unexpected error", ex);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
         }
