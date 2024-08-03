@@ -9,9 +9,13 @@ public interface ProductRepositoryPort {
 
     Product register(Product product);
 
-    void update(String name, String description, Category category, Double price);
+    Product update(Product product);
 
     Product findById(Long id);
 
     List<Product> findByCategoryId(Long categoryId);
+
+    List<Product> findAll();
+
+    void remove(Long productId);
 }

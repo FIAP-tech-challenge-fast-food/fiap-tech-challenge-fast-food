@@ -7,11 +7,15 @@ import java.util.List;
 
 public interface ProductServicePort {
 
-    public Product register(Product product);
+    Product register(Product product);
 
-    public void update(String name, String description, Category category, Double price);
+    Product update(Product product, Long productId);
 
-    public Product findById(Long id);
+    Product findById(Long id);
 
-    public List<Product> findByCategoryId(Long categoryId);
+    List<Product> findByCategoryId(Long categoryId);
+
+    List<Product> findAll();
+
+    void remove(Long productId);
 }

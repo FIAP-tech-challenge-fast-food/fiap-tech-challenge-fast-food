@@ -33,15 +33,21 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid category ID provided")
     })
-    public ResponseEntity<List<ProductDto>> findByCategoryId(
-            @Parameter(description = "ID of the category to retrieve products for", required = true) @RequestParam @Valid @NotNull Long categoryId) {
-        List<Product> products = productServicePort.findByCategoryId(categoryId);
+    public ResponseEntity<List<ProductDto>> findProducts(
+            @Parameter(description = "ID of the category to retrieve products for") @RequestParam(required = false) Long categoryId) {
+        List<Product> products;
+        if(categoryId != null) {
+            products = productServicePort.findByCategoryId(categoryId);
+        } else {
+            products = productServicePort.findAll();
+        }
+
         List<ProductDto> productDtos = products.stream().map(ProductMapperDto::toDto).toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(productDtos);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get product by ID", description = "Retrieve a product by their unique ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product retrieved successfully"),
@@ -71,5 +77,29 @@ public class ProductController {
                 .buildAndExpand(createdProduct.getId()).toUri();
 
         return ResponseEntity.created(uri).body(ProductMapperDto.toDto(createdProduct));
+    }
+
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Update a product", description = "Update a product in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Product updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+    })
+    public ResponseEntity<ProductDto> update(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be updated", required = true) @RequestBody ProductDto productDto,
+                                             @Parameter(description = "ID of the product to be updated", required = true) @PathVariable Long id) {
+        Product product = this.productServicePort.update(ProductMapperDto.toDomain(productDto), id);
+
+        return ResponseEntity.ok().body(ProductMapperDto.toDto(product));
+    }
+
+    @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Delete a product", description = "Delete a product from the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Product deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+    })
+    public ResponseEntity<String> delete(@Parameter(description = "ID of the product to be deleted", required = true) @PathVariable Long id) {
+        this.productServicePort.remove(id);
+        return ResponseEntity.ok().build();
     }
 }

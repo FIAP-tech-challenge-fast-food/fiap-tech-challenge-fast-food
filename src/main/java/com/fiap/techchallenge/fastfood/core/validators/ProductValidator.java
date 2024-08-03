@@ -17,6 +17,9 @@ public class ProductValidator {
     }
 
     public void validateProductExistsById(Long productId) {
+        if(productId == null) {
+            throw new IllegalArgumentException("productId cannot be empty");
+        }
         try {
             if (productRepositoryPort.findById(productId) == null) {
                 throw new ProductNotFoundException(productId);
@@ -36,9 +39,8 @@ public class ProductValidator {
         }
 
         Long categoryId = product.getCategory().getId();
-        if(categoryId == null) {
-            throw new IllegalArgumentException("Category cannot be empty");
+        if(categoryId != null) {
+            this.categoryValidator.validateCategoryExistsById(categoryId);
         }
-        this.categoryValidator.validateCategoryExistsById(categoryId);
     }
 }
