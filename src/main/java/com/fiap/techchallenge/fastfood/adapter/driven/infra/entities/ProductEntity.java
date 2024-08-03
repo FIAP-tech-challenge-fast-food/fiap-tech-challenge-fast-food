@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -15,9 +16,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Table(name = "products")
 @SQLDelete(sql = "UPDATE products SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
+@SQLRestriction("deleted=false")
 public class ProductEntity implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
