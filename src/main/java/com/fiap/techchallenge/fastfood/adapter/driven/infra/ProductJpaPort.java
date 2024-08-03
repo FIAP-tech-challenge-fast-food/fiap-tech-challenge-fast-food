@@ -5,9 +5,7 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.ProductEnti
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.ProductMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.ProductRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
-import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
-import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

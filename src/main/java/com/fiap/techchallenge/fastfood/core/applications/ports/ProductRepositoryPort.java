@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.fastfood.core.applications.ports;
 
-import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
 import java.util.List;
