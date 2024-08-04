@@ -29,14 +29,11 @@ public class OrderEntity implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-//    @Enumerated(EnumType.STRING)
     @Column(name="order_status", nullable = false)
     private OrderStatus orderStatus = OrderStatus.WAITING_PAYMENT;
-
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 }

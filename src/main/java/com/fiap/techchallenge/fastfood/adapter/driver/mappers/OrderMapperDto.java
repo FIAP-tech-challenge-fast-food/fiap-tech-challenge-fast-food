@@ -18,27 +18,11 @@ public class OrderMapperDto {
             return null;
         }
 
-//        User user = null;
-//        if (orderDto.getUser() != null) {
-//            user = new User(
-//                    orderDto.getUser().getId(),
-//                    orderDto.getUser().getName(),
-//                    orderDto.getUser().getEmail(),
-//                    orderDto.getUser().getCpf(),
-//                    orderDto.getUser().getCreatedAt()
-//            );
-//        }
-
         double totalPrice = 0.00;
         totalPrice += orderDto.getOrderItems() != null ?
                 orderDto.getOrderItems().stream()
                         .mapToDouble(item -> item.getPrice() * item.getQuantity())
                         .sum() : 0.00;
-
-//        totalPrice += orderDto.getOrderItems() != null ?
-//                orderDto.getOrderItems().stream()
-//                        .mapToDouble(OrderItemDto::getPrice)
-//                        .sum() : 0.00;
 
         List<OrderItem> orderItems = OrderItemMapperDto.mapToDomain(orderDto.getOrderItems());
 
@@ -73,11 +57,6 @@ public class OrderMapperDto {
                 order.getOrderItems().stream()
                         .mapToDouble(item -> item.getPrice() * item.getQuantity())
                         .sum() : 0.00;
-
-//        double totalPrice = order.getOrderItems() != null ?
-//                order.getOrderItems().stream()
-//                        .mapToDouble(OrderItem::getPrice)
-//                        .sum() : 0.00;
 
         List<OrderItemDto> orderItemsDto = order.getOrderItems() != null ?
                 order.getOrderItems().stream()
