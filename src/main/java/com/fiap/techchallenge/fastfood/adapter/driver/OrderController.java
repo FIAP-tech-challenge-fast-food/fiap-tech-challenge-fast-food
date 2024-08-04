@@ -1,11 +1,10 @@
 package com.fiap.techchallenge.fastfood.adapter.driver;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
-import com.fiap.techchallenge.fastfood.adapter.driver.dtos.UserDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateOrderStatusRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
-import com.fiap.techchallenge.fastfood.adapter.driver.mappers.UserMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
@@ -114,9 +113,9 @@ public class OrderController {
     })
     public ResponseEntity<OrderDto> updateStatus(
             @Parameter(description = "ID of the order to update", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New order status to be updated", required = true) @RequestBody OrderStatus newStatus) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New order status to be updated", required = true) @RequestBody UpdateOrderStatusRequest request) {
 
-        orderServicePort.updateOrderStatus(id, newStatus);
+        orderServicePort.updateOrderStatus(id, request.getNewStatus());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
