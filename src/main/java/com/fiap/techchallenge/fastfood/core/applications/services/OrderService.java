@@ -5,7 +5,6 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.OrderServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
-import com.fiap.techchallenge.fastfood.core.domain.User;
 
 import java.util.List;
 
@@ -17,8 +16,8 @@ public class OrderService implements OrderServicePort {
         this.orderRepositoryPort = orderRepositoryPort;
     }
 
-    public Order generateOrder(User user, List<OrderItem> orderItems) {
-        return this.orderRepositoryPort.generateOrder(user, orderItems);
+    public Order generateOrder(Long userId, List<OrderItem> orderItems) {
+        return this.orderRepositoryPort.generateOrder(userId, orderItems);
     }
 
     public Order findById(Long id) {

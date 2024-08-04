@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "orderItems")
+@Table(name = "order_items")
 public class OrderItemEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,11 +21,11 @@ public class OrderItemEntity implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 
     private Double price;

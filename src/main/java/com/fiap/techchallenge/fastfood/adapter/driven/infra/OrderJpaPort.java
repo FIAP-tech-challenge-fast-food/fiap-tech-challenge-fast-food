@@ -32,8 +32,10 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     @Transactional
-    public Order generateOrder(User user, List<OrderItem> orderItems) {
-        OrderEntity createdOrder = this.orderRepository.save(OrderMapper.toEntity(new Order(user)));
+    public Order generateOrder(Long userId, List<OrderItem> orderItems) {
+        OrderEntity orderEntity = OrderMapper.toEntity(new Order(new User(userId)));
+        orderEntity.setOrderStatus(OrderStatus.WAITING_PAYMENT);
+        OrderEntity createdOrder = this.orderRepository.save(orderEntity);
 
         List<OrderItemEntity> orderItemsEntities = orderItems.stream()
                 .map(orderItem -> {

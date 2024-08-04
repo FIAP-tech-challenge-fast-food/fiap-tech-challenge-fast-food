@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.adapter.driver;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.UserDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
@@ -40,7 +41,7 @@ public class OrderController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Order to be created", required = true) @RequestBody CreateOrderRequest request) {
 
         Order createdOrder = orderServicePort.generateOrder(
-                UserMapperDto.toDomain(request.getUser()),
+                request.getUser(),
                 OrderItemMapperDto.mapToDomain(request.getItems())
         );
 
