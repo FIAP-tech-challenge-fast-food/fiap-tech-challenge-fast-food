@@ -44,6 +44,7 @@ public class ProductMapper {
                 product.getDescription(),
                 product.getName(),
                 categoryEntity,
-                product.getPrice());
+                product.getPrice(),
+                false);
     }
 }
