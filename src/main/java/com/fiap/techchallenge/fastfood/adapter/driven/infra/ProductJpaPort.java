@@ -5,7 +5,6 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.ProductEnti
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.ProductMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.ProductRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
-import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,13 +25,14 @@ public class ProductJpaPort implements ProductRepositoryPort {
     }
 
     @Override
-    public void update(String name, String description, Category category, Double price) {
-        this.productRepository.save(ProductMapper.toEntity(new Product(name, description, category, price)));
+    public Product update(Product product) {
+        ProductEntity productEntity = this.productRepository.save(ProductMapper.toEntity(product));
+        return ProductMapper.toDomain(productEntity);
     }
 
     @Override
     public Product findById(Long id) {
-        ProductEntity productEntity = this.productRepository.getReferenceById(id);
+        ProductEntity productEntity = this.productRepository.findById(id).orElse(null);
         return ProductMapper.toDomain(productEntity);
     }
 
@@ -43,5 +43,16 @@ public class ProductJpaPort implements ProductRepositoryPort {
         var productEntities = this.productRepository.findByCategory(categoryEntity);
 
         return productEntities.stream().map(ProductMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> findAll() {
+        var productEntities = this.productRepository.findAll();
+        return productEntities.stream().map(ProductMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public void remove(Long productId) {
+        this.productRepository.deleteById(productId);
     }
 }

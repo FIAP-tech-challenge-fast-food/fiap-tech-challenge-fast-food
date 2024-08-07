@@ -1,17 +1,20 @@
 package com.fiap.techchallenge.fastfood.core.applications.ports;
 
-import com.fiap.techchallenge.fastfood.core.domain.Category;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
 import java.util.List;
 
 public interface ProductServicePort {
 
-    public Product register(Product product);
+    Product register(Product product);
 
-    public void update(String name, String description, Category category, Double price);
+    Product update(Product product, Long productId);
 
-    public Product findById(Long id);
+    Product findById(Long id);
 
-    public List<Product> findByCategoryId(Long categoryId);
+    List<Product> findByCategoryId(Long categoryId);
+
+    List<Product> findAll();
+
+    void remove(Long productId);
 }
