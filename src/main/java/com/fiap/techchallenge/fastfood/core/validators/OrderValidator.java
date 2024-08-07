@@ -2,6 +2,9 @@ package com.fiap.techchallenge.fastfood.core.validators;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
+import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
+import com.fiap.techchallenge.fastfood.core.exceptions.InvalidOrderStatusException;
+import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 
 import java.util.List;
 
@@ -25,5 +28,17 @@ public class OrderValidator {
         this.userValidator.validateUserExistsById(userId);
 
         this.orderItemValidator.validateItems(orderItems);
+    }
+
+    public void validateOrderExistsById(Long orderId) {
+        if (orderRepositoryPort.findById(orderId) == null) {
+            throw new OrderNotFoundException(orderId);
+        }
+    }
+
+    public void validateOrderStatusExists(int value) {
+        if (!OrderStatus.isValid(value)) {
+            throw new InvalidOrderStatusException();
+        }
     }
 }

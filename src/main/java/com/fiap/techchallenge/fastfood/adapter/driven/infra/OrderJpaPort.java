@@ -12,13 +12,12 @@ import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.domain.User;
-import jakarta.persistence.EntityNotFoundException;
+import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,7 +51,9 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     public Order findById(Long id) {
-        OrderEntity orderEntity = this.orderRepository.getReferenceById(id);
+        OrderEntity orderEntity = this.orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException(id));
+
         List<OrderItemEntity> orderItemsEntities = this.orderItemRepository.findByOrderId(orderEntity.getId());
 
         return OrderMapper.toDomain(orderEntity, orderItemsEntities);
@@ -61,6 +62,10 @@ public class OrderJpaPort implements OrderRepositoryPort {
     @Override
     public List<Order> findByStatus(OrderStatus orderStatus) {
         List<OrderEntity> orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
+
+        if (orderEntities.isEmpty()) {
+            throw new OrderNotFoundException(orderStatus);
+        }
 
         return mapToOrdersWithItems(orderEntities);
     }
@@ -76,15 +81,11 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     public void updateOrderStatus(Long orderId, OrderStatus newOrderStatus) {
-        Optional<OrderEntity> optionalOrder = this.orderRepository.findById(orderId);
-        if (optionalOrder.isPresent()) {
-            OrderEntity order = optionalOrder.get();
-            order.setOrderStatus(newOrderStatus);
+        OrderEntity orderEntity = this.orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderEntity.setOrderStatus(newOrderStatus);
 
-            this.orderRepository.save(order);
-        } else {
-            throw new EntityNotFoundException("Order with id " + orderId + " not found");
-        }
+        this.orderRepository.save(orderEntity);
     }
 
     private List<Order> mapToOrdersWithItems(List<OrderEntity> orderEntities) {

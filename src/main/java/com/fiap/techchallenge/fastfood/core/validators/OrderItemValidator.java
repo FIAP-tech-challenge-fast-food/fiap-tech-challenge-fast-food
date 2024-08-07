@@ -2,7 +2,6 @@ package com.fiap.techchallenge.fastfood.core.validators;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
-import com.fiap.techchallenge.fastfood.core.exceptions.InvalidOrderQuantityException;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class OrderItemValidator {
 
         if (orderItem.getQuantity() == null || orderItem.getQuantity() <= 0) {
             throw new IllegalArgumentException("Product quantity in order item cannot be null or less than or equal to zero");
-//            throw new InvalidOrderQuantityException();
         }
 
         if (orderItem.getPrice() == null || orderItem.getPrice() <= 0) {

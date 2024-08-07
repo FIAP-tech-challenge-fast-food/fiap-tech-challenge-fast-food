@@ -12,6 +12,7 @@ public class OrderService implements OrderServicePort {
 
     private final OrderRepositoryPort orderRepositoryPort;
     private final OrderValidator orderValidator;
+    private final UserValidator userValidator;
 
     public OrderService(OrderRepositoryPort orderRepositoryPort, OrderItemRepositoryPort orderItemRepositoryPort,
                         ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort,
@@ -20,6 +21,7 @@ public class OrderService implements OrderServicePort {
         this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(orderItemRepositoryPort,
                 new ProductValidator(productRepositoryPort, new CategoryValidator(categoryRepositoryPort))),
                 new UserValidator(userRepositoryPort));
+        this.userValidator = new UserValidator(userRepositoryPort);
     }
 
     public Order generateOrder(Long userId, List<OrderItem> orderItems) {
@@ -28,18 +30,23 @@ public class OrderService implements OrderServicePort {
     }
 
     public Order findById(Long id) {
+//        this.orderValidator.validateOrderExistsById();
         return this.orderRepositoryPort.findById(id);
     }
 
     public List<Order> findByStatus(OrderStatus orderStatus) {
+        this.orderValidator.validateOrderStatusExists(orderStatus.getValue());
         return this.orderRepositoryPort.findByStatus(orderStatus);
     }
 
     public List<Order> findByUserId(Long userId) {
+        this.userValidator.validateUserExistsById(userId);
         return this.orderRepositoryPort.findByUserId(userId);
     }
 
     public void updateOrderStatus(Long orderId, OrderStatus orderStatus) {
+        this.orderValidator.validateOrderExistsById(orderId);
+        this.orderValidator.validateOrderStatusExists(orderStatus.getValue());
         this.orderRepositoryPort.updateOrderStatus(orderId, orderStatus);
     }
 }
