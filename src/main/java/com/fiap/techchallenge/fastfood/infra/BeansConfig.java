@@ -1,15 +1,9 @@
 package com.fiap.techchallenge.fastfood.infra;
 
 import com.fiap.techchallenge.fastfood.core.applications.ports.*;
+import com.fiap.techchallenge.fastfood.core.applications.services.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.fiap.techchallenge.fastfood.core.applications.services.CategoryService;
-import com.fiap.techchallenge.fastfood.core.applications.services.OrderItemService;
-import com.fiap.techchallenge.fastfood.core.applications.services.PaymentService;
-import com.fiap.techchallenge.fastfood.core.applications.services.ProductService;
-import com.fiap.techchallenge.fastfood.core.applications.services.OrderService;
-import com.fiap.techchallenge.fastfood.core.applications.services.UserService;
 
 @Configuration
 public class BeansConfig {
@@ -31,13 +25,18 @@ public class BeansConfig {
     }
 
     @Bean
-    public OrderServicePort orderServiceImpl(OrderRepositoryPort orderRepositoryPort) {
-        return new OrderService(orderRepositoryPort);
+    public OrderServicePort orderServiceImpl(OrderRepositoryPort orderRepositoryPort,
+                                             OrderItemRepositoryPort orderItemRepositoryPort,
+                                             ProductRepositoryPort productRepositoryPort,
+                                             CategoryRepositoryPort categoryRepositoryPort,
+                                             UserRepositoryPort userRepositoryPort) {
+        return new OrderService(orderRepositoryPort, orderItemRepositoryPort, productRepositoryPort,
+                categoryRepositoryPort, userRepositoryPort);
     }
 
     @Bean
-    public OrderItemServicePort orderItemServiceImpl(OrderItemRepositoryPort orderItemRepositoryPort) {
-        return new OrderItemService(orderItemRepositoryPort);
+    public OrderItemServicePort orderItemServiceImpl(OrderItemRepositoryPort orderItemRepositoryPort, ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort) {
+        return new OrderItemService(orderItemRepositoryPort, productRepositoryPort, categoryRepositoryPort);
     }
 
     @Bean
