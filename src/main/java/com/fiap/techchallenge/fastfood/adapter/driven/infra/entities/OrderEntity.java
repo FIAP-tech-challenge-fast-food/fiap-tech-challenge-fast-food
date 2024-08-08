@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -36,4 +39,7 @@ public class OrderEntity implements Serializable {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
+    private List<OrderItemEntity> orderItems;
 }

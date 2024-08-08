@@ -31,22 +31,13 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     @Transactional
-    public Order generateOrder(Long userId, List<OrderItem> orderItems) {
-        OrderEntity orderEntity = OrderMapper.toEntity(new Order(new User(userId)));
-        orderEntity.setOrderStatus(OrderStatus.WAITING_PAYMENT);
+    public Order generateOrder(Order order) {
+        OrderEntity orderEntity = OrderMapper.toEntity(order);
+        List<OrderItemEntity> orderItemEntities = order.getOrderItems().stream().map(OrderItemMapper::toEntity).peek(x -> x.setOrder(orderEntity)).toList();
+        orderEntity.setOrderItems(orderItemEntities);
         OrderEntity createdOrder = this.orderRepository.save(orderEntity);
 
-        List<OrderItemEntity> orderItemsEntities = orderItems.stream()
-                .map(orderItem -> {
-                    OrderItemEntity orderItemEntity = OrderItemMapper.toEntity(orderItem);
-                    orderItemEntity.setOrder(createdOrder);
-                    return orderItemEntity;
-                })
-                .collect(Collectors.toList());
-
-        List<OrderItemEntity> orderItemEntities = this.orderItemRepository.saveAll(orderItemsEntities);
-
-        return OrderMapper.toDomain(createdOrder, orderItemEntities);
+        return OrderMapper.toDomain(createdOrder);
     }
 
     @Override

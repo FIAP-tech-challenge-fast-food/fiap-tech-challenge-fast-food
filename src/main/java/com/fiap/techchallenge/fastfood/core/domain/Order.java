@@ -34,6 +34,14 @@ public class Order {
         this.user = user;
     }
 
+    public Order(Long id, User user, OrderStatus orderStatus, LocalDateTime createdAt, List<OrderItem> orderItems) {
+        this.id = id;
+        this.user = user;
+        this.orderStatus = orderStatus;
+        this.createdAt = createdAt;
+        this.orderItems = orderItems;
+    }
+
     public Long getId() {
         return id;
     }

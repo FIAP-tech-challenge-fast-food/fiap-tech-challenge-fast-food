@@ -24,7 +24,7 @@ public class OrderItemEntity implements Serializable {
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 
