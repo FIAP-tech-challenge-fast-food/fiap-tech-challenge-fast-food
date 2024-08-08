@@ -1,12 +1,12 @@
 package com.fiap.techchallenge.fastfood.core.domain;
 
 public enum OrderStatus {
-    WAITING_PAYMENT(1),
-    PAID(2),
-    IN_PREPARATION(3),
-    READY(4),
-    DELIVERED(5),
-    CANCELED(6);
+    WAITING_PAYMENT(0),
+    PAID(1),
+    IN_PREPARATION(2),
+    READY(3),
+    DELIVERED(4),
+    CANCELED(5);
 
     private final int value;
 
@@ -16,5 +16,14 @@ public enum OrderStatus {
 
     public int getValue() {
         return value;
+    }
+
+    public static boolean isValid(int value) {
+        for (OrderStatus status : OrderStatus.values()) {
+            if (status.getValue() == value) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class OrderDto {
     private Long id;
-    private UserDto user;
+    private Long userId;
     private OrderStatus orderStatus;
     private Double totalPrice;
     private LocalDateTime createdAt;

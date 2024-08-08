@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fiap.techchallenge.fastfood.core.exceptions.DefaultExceptionBody;
-import com.fiap.techchallenge.fastfood.core.exceptions.InvalidOrderQuantityException;
 
 @ControllerAdvice
 public class OrderItemExceptionHandler {
@@ -23,15 +22,4 @@ public class OrderItemExceptionHandler {
                             request.getDescription(false));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
     }
-
-    @ExceptionHandler(InvalidOrderQuantityException.class)
-    public ResponseEntity<DefaultExceptionBody> handleInvalidOrderQuantityException(InvalidOrderQuantityException ex,
-                    WebRequest request) {
-            DefaultExceptionBody exception = new DefaultExceptionBody(
-                            LocalDateTime.now(),
-                            ex.getMessage(),
-                            request.getDescription(false));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
-    }
-
 }

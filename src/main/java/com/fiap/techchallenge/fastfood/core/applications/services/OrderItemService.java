@@ -1,23 +1,32 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
-import java.util.List;
-
+import com.fiap.techchallenge.fastfood.core.applications.ports.CategoryRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemServicePort;
+import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
+import com.fiap.techchallenge.fastfood.core.validators.CategoryValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
+import com.fiap.techchallenge.fastfood.core.validators.ProductValidator;
+
+import java.util.List;
 
 public class OrderItemService implements OrderItemServicePort {
 
-    private OrderItemRepositoryPort orderItemRepositoryPort;
+    private final OrderItemRepositoryPort orderItemRepositoryPort;
+    private final OrderItemValidator orderItemValidator;
 
-    public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort) {
+
+    public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort, ProductRepositoryPort productRepositoryPort,
+                            CategoryRepositoryPort categoryRepositoryPort) {
         this.orderItemRepositoryPort = orderItemRepositoryPort;
+        this.orderItemValidator = new OrderItemValidator(orderItemRepositoryPort, new ProductValidator(productRepositoryPort,
+                new CategoryValidator(categoryRepositoryPort)));
     }
 
     @Override
     public void register(OrderItem orderItem) {
-        OrderItemValidator.validate(orderItem);
+        this.orderItemValidator.validate(orderItem);
 
         calculatePrice(orderItem);
 

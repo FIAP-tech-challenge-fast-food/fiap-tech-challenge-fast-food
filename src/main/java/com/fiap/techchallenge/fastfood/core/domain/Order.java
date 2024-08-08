@@ -22,6 +22,8 @@ public class Order {
     }
 
     public Order(User user, List<OrderItem> orderItems) {
+        this.user = user;
+        this.orderItems = orderItems;
     }
 
     public Order(Long id) {
@@ -29,6 +31,7 @@ public class Order {
     }
 
     public Order(User user) {
+        this.user = user;
     }
 
     public Long getId() {

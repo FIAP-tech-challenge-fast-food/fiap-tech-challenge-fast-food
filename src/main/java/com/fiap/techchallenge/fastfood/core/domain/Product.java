@@ -17,6 +17,10 @@ public class Product {
         this.price = price;
     }
 
+    public Product(Long id) {
+        this.id = id;
+    }
+
     private Long id;
 
     private String name;

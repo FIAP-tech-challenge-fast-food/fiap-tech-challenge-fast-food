@@ -29,9 +29,10 @@ public class OrderMapper {
             );
         }
 
-        double totalPrice = orderItemsEntities != null ?
+        double totalPrice = 0.00;
+        totalPrice += orderItemsEntities != null ?
                 orderItemsEntities.stream()
-                        .mapToDouble(OrderItemEntity::getPrice)
+                        .mapToDouble(item -> item.getPrice() * item.getQuantity())
                         .sum() : 0.00;
 
         List<OrderItem> orderItems = orderItemsEntities != null ?

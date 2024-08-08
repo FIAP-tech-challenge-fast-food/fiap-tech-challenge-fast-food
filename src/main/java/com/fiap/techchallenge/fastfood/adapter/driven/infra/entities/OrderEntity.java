@@ -34,6 +34,6 @@ public class OrderEntity implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
