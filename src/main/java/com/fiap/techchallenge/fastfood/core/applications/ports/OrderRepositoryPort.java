@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderRepositoryPort {
 
-    Order generateOrder(Long userId, List<OrderItem> orderItems);
+    Order generateOrder(Order order);
 
     Order findById(Long id);
 

@@ -16,14 +16,18 @@ public class ProductValidator {
         this.categoryValidator = categoryValidator;
     }
 
-    public void validateProductExistsById(Long productId) {
+    public Product validateProductExistsById(Long productId) {
+        Product product;
         if(productId == null) {
             throw new IllegalArgumentException("productId cannot be empty");
         }
         try {
-            if (productRepositoryPort.findById(productId) == null) {
+            product = productRepositoryPort.findById(productId);
+            if (product == null) {
                 throw new ProductNotFoundException(productId);
             }
+
+            return product;
         } catch (EntityNotFoundException e) {
             throw new ProductNotFoundException(productId);
         }

@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CreateOrderRequest {
-    private Long userId;
-    private List<OrderItemRequest> items;
+public class OrderItemRequest {
+    private Long productId;
+    private int quantity;
 }
