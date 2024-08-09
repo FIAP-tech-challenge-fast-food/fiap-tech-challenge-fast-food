@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -33,7 +31,7 @@ public class OrderEntity implements Serializable {
     private UserEntity user;
 
     @Column(name="order_status")
-    private OrderStatus orderStatus = OrderStatus.WAITING_PAYMENT;
+    private OrderStatus orderStatus;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @CreationTimestamp

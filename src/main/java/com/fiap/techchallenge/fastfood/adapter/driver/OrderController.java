@@ -3,12 +3,10 @@ package com.fiap.techchallenge.fastfood.adapter.driver;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateOrderStatusRequest;
-import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
-import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -76,7 +74,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "No order was found")
     })
     public ResponseEntity<List<OrderDto>> findByStatus(
-            @Parameter(description = "Status of orders to be retrieved", required = true) @RequestParam OrderStatus status) {
+            @Parameter(description = "Status of orders to be retrieved", required = true) @RequestParam String status) {
 
         List<Order> orders = orderServicePort.findByStatus(status);
 

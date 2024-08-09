@@ -36,9 +36,13 @@ public class OrderValidator {
         }
     }
 
-    public void validateOrderStatusExists(int value) {
-        if (!OrderStatus.isValid(value)) {
+    public void validateOrderStatusExists(String value) {
+        if (value == null || value.isEmpty()) {
             throw new InvalidOrderStatusException();
+        }
+
+        if (!OrderStatus.isValid(value)) {
+            throw new InvalidOrderStatusException(value);
         }
     }
 }
