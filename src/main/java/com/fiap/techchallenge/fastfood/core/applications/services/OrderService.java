@@ -82,9 +82,11 @@ public class OrderService implements OrderServicePort {
         return order;
     }
 
-    public List<Order> findByStatus(OrderStatus orderStatus) {
-        this.orderValidator.validateOrderStatusExists(orderStatus.getValue());
-        return this.orderRepositoryPort.findByStatus(orderStatus);
+    public List<Order> findByStatus(String orderStatus) {
+        this.orderValidator.validateOrderStatusExists(orderStatus);
+
+        OrderStatus status = OrderStatus.valueOf(orderStatus);
+        return this.orderRepositoryPort.findByStatus(status);
     }
 
     public List<Order> findByUserId(Long userId) {
@@ -92,9 +94,11 @@ public class OrderService implements OrderServicePort {
         return this.orderRepositoryPort.findByUserId(userId);
     }
 
-    public void updateOrderStatus(Long orderId, OrderStatus orderStatus) {
+    public void updateOrderStatus(Long orderId, String orderStatus) {
         this.orderValidator.validateOrderExistsById(orderId);
-        this.orderValidator.validateOrderStatusExists(orderStatus.getValue());
-        this.orderRepositoryPort.updateOrderStatus(orderId, orderStatus);
+        this.orderValidator.validateOrderStatusExists(orderStatus);
+
+        OrderStatus status = OrderStatus.valueOf(orderStatus);
+        this.orderRepositoryPort.updateOrderStatus(orderId, status);
     }
 }
