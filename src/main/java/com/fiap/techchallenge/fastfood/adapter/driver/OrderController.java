@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Order Management", description = "Operations related to order management")
 public class OrderController {
 
@@ -52,11 +52,10 @@ public class OrderController {
         return ResponseEntity.created(uri).body(OrderMapperDto.toDto(createdOrder));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get order by ID", description = "Retrieve an order by its unique ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Order retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Order ID provided is invalid"),
             @ApiResponse(responseCode = "404", description = "Order not found")
     })
     public ResponseEntity<OrderDto> findById(
@@ -70,8 +69,7 @@ public class OrderController {
     @Operation(summary = "Retrieve orders based on filter criteria", description = "Retrieve a list of orders by status and/or user ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of orders retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided"),
-            @ApiResponse(responseCode = "404", description = "No orders found based on the provided criteria")
+            @ApiResponse(responseCode = "404", description = "No orders found")
     })
     public ResponseEntity<List<OrderDto>> findOrders(
             @Parameter(description = "Status of orders to be retrieved") @RequestParam(required = false) String status,
@@ -86,12 +84,11 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(ordersDtos);
     }
 
-    @PutMapping("/{id}/status")
+    @PutMapping(path = "/{id}/status", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update an order status", description = "Update the status of an order in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Order status updated successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
-            @ApiResponse(responseCode = "404", description = "Order not found")
     })
     public ResponseEntity<OrderDto> updateStatus(
             @Parameter(description = "ID of the order to update", required = true) @PathVariable Long id,
