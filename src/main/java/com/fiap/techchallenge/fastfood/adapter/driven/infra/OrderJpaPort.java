@@ -9,9 +9,7 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderIt
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
-import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
-import com.fiap.techchallenge.fastfood.core.domain.User;
 import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +31,8 @@ public class OrderJpaPort implements OrderRepositoryPort {
     @Transactional
     public Order generateOrder(Order order) {
         OrderEntity orderEntity = OrderMapper.toEntity(order);
-        List<OrderItemEntity> orderItemEntities = order.getOrderItems().stream().map(OrderItemMapper::toEntity).peek(x -> x.setOrder(orderEntity)).toList();
+        List<OrderItemEntity> orderItemEntities = order.getOrderItems().stream().map(OrderItemMapper::toEntity)
+                .peek(x -> x.setOrder(orderEntity)).toList();
         orderEntity.setOrderItems(orderItemEntities);
         OrderEntity createdOrder = this.orderRepository.save(orderEntity);
 
@@ -86,7 +85,8 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
         return orderEntities.stream()
                 .map(orderEntity -> {
-                    List<OrderItemEntity> orderItemsEntities = this.orderItemRepository.findByOrderId(orderEntity.getId());
+                    List<OrderItemEntity> orderItemsEntities = this.orderItemRepository
+                            .findByOrderId(orderEntity.getId());
                     return OrderMapper.toDomain(orderEntity, orderItemsEntities);
                 })
                 .collect(Collectors.toList());

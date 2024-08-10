@@ -5,9 +5,7 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemReposito
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemServicePort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
-import com.fiap.techchallenge.fastfood.core.validators.CategoryValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
-import com.fiap.techchallenge.fastfood.core.validators.ProductValidator;
 
 import java.util.List;
 
@@ -16,12 +14,11 @@ public class OrderItemService implements OrderItemServicePort {
     private final OrderItemRepositoryPort orderItemRepositoryPort;
     private final OrderItemValidator orderItemValidator;
 
-
-    public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort, ProductRepositoryPort productRepositoryPort,
-                            CategoryRepositoryPort categoryRepositoryPort) {
+    public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort,
+            ProductRepositoryPort productRepositoryPort,
+            CategoryRepositoryPort categoryRepositoryPort) {
         this.orderItemRepositoryPort = orderItemRepositoryPort;
-        this.orderItemValidator = new OrderItemValidator(orderItemRepositoryPort, new ProductValidator(productRepositoryPort,
-                new CategoryValidator(categoryRepositoryPort)));
+        this.orderItemValidator = new OrderItemValidator();
     }
 
     @Override
@@ -30,18 +27,18 @@ public class OrderItemService implements OrderItemServicePort {
 
         calculatePrice(orderItem);
 
-        this.orderItemRepositoryPort.register(orderItem.getProduct(), orderItem.getOrder(), orderItem.getPrice(), orderItem.getQuantity());
+        this.orderItemRepositoryPort.register(orderItem.getProduct(), orderItem.getOrder(), orderItem.getPrice(),
+                orderItem.getQuantity());
     }
 
     @Override
     public List<OrderItem> findByOrderId(Long orderId) {
-        //TODO: Colocar o validator order
+        // TODO: Colocar o validator order
         return this.orderItemRepositoryPort.findByOrderId(orderId);
     }
 
     private void calculatePrice(OrderItem orderItem) {
         Double price = orderItem.getProduct().getPrice() * orderItem.getQuantity();
-
         orderItem.setPrice(price);
     }
 

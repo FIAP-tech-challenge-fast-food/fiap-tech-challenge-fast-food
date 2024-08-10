@@ -16,11 +16,10 @@ public class OrderService implements OrderServicePort {
     private final ProductRepositoryPort productRepositoryPort;
 
     public OrderService(OrderRepositoryPort orderRepositoryPort, OrderItemRepositoryPort orderItemRepositoryPort,
-                        ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort,
-                        UserRepositoryPort userRepositoryPort) {
+            ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort,
+            UserRepositoryPort userRepositoryPort) {
         this.orderRepositoryPort = orderRepositoryPort;
-        this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(orderItemRepositoryPort,
-                new ProductValidator(productRepositoryPort, new CategoryValidator(categoryRepositoryPort))),
+        this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(),
                 new UserValidator(userRepositoryPort));
         this.userValidator = new UserValidator(userRepositoryPort);
         this.productRepositoryPort = productRepositoryPort;
@@ -44,13 +43,13 @@ public class OrderService implements OrderServicePort {
     private OrderItem fillOrderItems(OrderItem orderItem, Order order) {
         Product originalProduct = orderItem.getProduct();
 
-        if(originalProduct == null) {
+        if (originalProduct == null) {
             return null;
         }
 
         Product product = this.productRepositoryPort.findById(orderItem.getProduct().getId());
 
-        if(product == null) {
+        if (product == null) {
             throw new ProductNotFoundException(orderItem.getProduct().getId());
         }
 
@@ -67,10 +66,9 @@ public class OrderService implements OrderServicePort {
 
     private static double calculateTotalPrice(List<OrderItem> orderItems) {
         double totalPrice = 0.00;
-        totalPrice += orderItems != null ?
-                orderItems.stream()
-                        .mapToDouble(item -> getOrderItemPrice(item.getPrice(), item.getQuantity()))
-                        .sum() : 0.00;
+        totalPrice += orderItems != null ? orderItems.stream()
+                .mapToDouble(item -> getOrderItemPrice(item.getPrice(), item.getQuantity()))
+                .sum() : 0.00;
         return totalPrice;
     }
 

@@ -10,6 +10,10 @@ public enum OrderStatus {
 
     private final int value;
 
+    public int getValue() {
+        return value;
+    }
+
     OrderStatus(int value) {
         this.value = value;
     }
