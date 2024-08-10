@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -79,10 +78,6 @@ public class OrderController {
             @Parameter(description = "User ID of orders to be retrieved") @RequestParam(required = false) Long userId) {
 
         List<Order> orders = orderServicePort.findOrdersByQueryParams(status, userId);
-
-        if (orders.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
-        }
 
         List<OrderDto> ordersDtos = orders.stream()
                 .map(OrderMapperDto::toDto)

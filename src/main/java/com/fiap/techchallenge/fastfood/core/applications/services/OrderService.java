@@ -97,7 +97,13 @@ public class OrderService implements OrderServicePort {
             filters = filters.and((root, query, cb) -> cb.equal(root.get("user").get("id"), userId));
         }
 
-        return this.orderRepositoryPort.findOrdersByQueryParams(filters);
+        List<Order> orders = this.orderRepositoryPort.findOrdersByQueryParams(filters);
+
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException();
+        }
+
+        return orders;
     }
 
     public void updateOrderStatus(Long orderId, String orderStatus) {
