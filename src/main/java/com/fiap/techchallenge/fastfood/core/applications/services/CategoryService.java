@@ -23,6 +23,7 @@ public class CategoryService implements CategoryServicePort {
         return this.categoryRepositoryPort.insertCategory(category);
     }
     public Category updateCategory(Long id, Category category) {
+        categoryValidator.validateCategoryAlreadyExists(category.getDescription());
         categoryValidator.validateCategoryExistsById(id);
         return this.categoryRepositoryPort.updateCategory(id, category);
     }

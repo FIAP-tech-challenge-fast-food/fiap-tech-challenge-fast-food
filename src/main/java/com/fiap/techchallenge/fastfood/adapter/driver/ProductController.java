@@ -6,6 +6,10 @@ import com.fiap.techchallenge.fastfood.adapter.driver.mappers.ProductMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
+import com.fiap.techchallenge.fastfood.core.exceptions.ProductNotFoundException;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.*;
@@ -31,8 +35,7 @@ public class ProductController {
     @GetMapping()
     @Operation(summary = "Get products by category ID", description = "Retrieve a list of products by their category ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid category ID provided")
+            @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
     })
     public ResponseEntity<List<ProductDto>> findProducts(
             @Parameter(description = "ID of the category to retrieve products for") @RequestParam(required = false) Long categoryId) {
@@ -52,7 +55,12 @@ public class ProductController {
     @Operation(summary = "Get product by ID", description = "Retrieve a product by their unique ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
+            @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "timestamp": "2024-08-10T18:25:17.7020587",
+                      "message": "Product not found with id: 1000",
+                      "details": "uri=/products/1000"
+                    }""")))
     })
     public ResponseEntity<ProductDto> findById(
             @Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable @Valid @NotNull Long id
@@ -66,7 +74,13 @@ public class ProductController {
     @Operation(summary = "Create a new product", description = "Register a new product in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+            @ApiResponse(responseCode = "400", description = "Invalid input provided", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "errors": [
+                        "Invalid price: must be greater or equals 0",
+                        "Invalid categoryId: cannot be empty"
+                      ]
+                    }""")))
     })
     public ResponseEntity<ProductDto> register(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be created", required = true)
@@ -84,7 +98,19 @@ public class ProductController {
     @Operation(summary = "Update a product", description = "Update a product in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+            @ApiResponse(responseCode = "400", description = "Invalid input provided", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "errors": [
+                        "Invalid price: must be greater or equals 0",
+                        "Invalid categoryId: cannot be empty"
+                      ]
+                    }"""))),
+            @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "timestamp": "2024-08-10T18:25:17.7020587",
+                      "message": "Product not found with id: 1000",
+                      "details": "uri=/products/1000"
+                    }""")))
     })
     public ResponseEntity<ProductDto> update(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be updated", required = true) @RequestBody ProductDto productDto,
                                              @Parameter(description = "ID of the product to be updated", required = true) @PathVariable Long id) {
@@ -96,8 +122,13 @@ public class ProductController {
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Delete a product", description = "Delete a product from the system")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Product deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+            @ApiResponse(responseCode = "201", description = "Product deleted successfully", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+            @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "timestamp": "2024-08-10T18:25:17.7020587",
+                      "message": "Product not found with id: 1000",
+                      "details": "uri=/products/1000"
+                    }""")))
     })
     public ResponseEntity<String> delete(@Parameter(description = "ID of the product to be deleted", required = true) @PathVariable Long id) {
         this.productServicePort.remove(id);
