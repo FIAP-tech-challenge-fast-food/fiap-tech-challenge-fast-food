@@ -1,19 +1,10 @@
 package com.fiap.techchallenge.fastfood.core.validators;
 
-import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 
 import java.util.List;
 
 public class OrderItemValidator {
-
-    private final OrderItemRepositoryPort orderItemRepositoryPort;
-    private final ProductValidator productValidator;
-
-    public OrderItemValidator(OrderItemRepositoryPort orderItemRepositoryPort, ProductValidator productValidator) {
-        this.orderItemRepositoryPort = orderItemRepositoryPort;
-        this.productValidator = productValidator;
-    }
 
     public void validate(OrderItem orderItem) {
         if (orderItem == null) {

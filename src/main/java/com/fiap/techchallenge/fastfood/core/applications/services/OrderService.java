@@ -19,8 +19,7 @@ public class OrderService implements OrderServicePort {
                         ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort,
                         UserRepositoryPort userRepositoryPort) {
         this.orderRepositoryPort = orderRepositoryPort;
-        this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(orderItemRepositoryPort,
-                new ProductValidator(productRepositoryPort, new CategoryValidator(categoryRepositoryPort))),
+        this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(),
                 new UserValidator(userRepositoryPort));
         this.userValidator = new UserValidator(userRepositoryPort);
         this.productRepositoryPort = productRepositoryPort;

@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.mappers;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.PaymentDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreatePaymentRequest;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
@@ -22,6 +23,24 @@ public class PaymentMapperDto {
                 paymentDto.getExternalReference(),
                 order,
                 paymentDto.getCreatedAt());
+    }
+
+    public static Payment toDomain(CreatePaymentRequest createPaymentRequest) {
+        if (createPaymentRequest == null) {
+            return null;
+        }
+
+        Order order = null;
+        
+        if (createPaymentRequest.getOrderId() != null) {
+            order = new Order(createPaymentRequest.getOrderId());
+        }
+
+        return new Payment(
+                null,
+                createPaymentRequest.getExternalReference(),
+                order,
+                createPaymentRequest.getCreatedAt());
     }
 
     public static PaymentDto toDto(Payment payment) {
