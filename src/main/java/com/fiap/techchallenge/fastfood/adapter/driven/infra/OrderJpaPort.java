@@ -40,12 +40,6 @@ public class OrderJpaPort implements OrderRepositoryPort {
     }
 
     @Override
-    public List<Order> findAll() {
-        List<OrderEntity> orderEntities = this.orderRepository.findAll();
-        return orderEntities.stream().map(OrderMapper::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
     public Order findById(Long id) {
         OrderEntity orderEntity = this.orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));

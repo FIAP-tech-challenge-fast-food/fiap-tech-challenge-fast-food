@@ -44,11 +44,6 @@ public class OrderService implements OrderServicePort {
         return this.orderRepositoryPort.generateOrder(order);
     }
 
-    @Override
-    public List<Order> findAll() {
-        return this.orderRepositoryPort.findAll();
-    }
-
     private OrderItem fillOrderItems(OrderItem orderItem, Order order) {
         Product originalProduct = orderItem.getProduct();
 

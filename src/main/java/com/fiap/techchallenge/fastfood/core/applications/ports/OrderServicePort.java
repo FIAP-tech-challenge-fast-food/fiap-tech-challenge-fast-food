@@ -9,8 +9,6 @@ public interface OrderServicePort {
 
     Order generateOrder(Long userId, List<OrderItem> orderItems);
 
-    List<Order> findAll();
-
     Order findById(Long id);
 
     List<Order> findOrdersByQueryParams(String orderStatus, Long userId);

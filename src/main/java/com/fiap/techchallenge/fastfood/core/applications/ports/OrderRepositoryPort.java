@@ -11,8 +11,6 @@ public interface OrderRepositoryPort {
 
     Order generateOrder(Order order);
 
-    List<Order> findAll();
-
     Order findById(Long id);
 
     List<Order> findOrdersByQueryParams(Specification<OrderEntity> filters);
