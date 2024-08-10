@@ -2,7 +2,6 @@ package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderItemEntity;
-import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.UserEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderItemMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderItemRepository;
@@ -12,6 +11,7 @@ import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,21 +50,8 @@ public class OrderJpaPort implements OrderRepositoryPort {
     }
 
     @Override
-    public List<Order> findByStatus(OrderStatus orderStatus) {
-        List<OrderEntity> orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
-
-        if (orderEntities.isEmpty()) {
-            throw new OrderNotFoundException(orderStatus);
-        }
-
-        return mapToOrdersWithItems(orderEntities);
-    }
-
-    @Override
-    public List<Order> findByUserId(Long userId) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(userId);
-        List<OrderEntity> orderEntities = this.orderRepository.findByUser(userEntity);
+    public List<Order> findOrdersByQueryParams(Specification<OrderEntity> filters) {
+        List<OrderEntity> orderEntities = orderRepository.findAll(filters);
 
         return mapToOrdersWithItems(orderEntities);
     }

@@ -1,10 +1,14 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
+import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
 import com.fiap.techchallenge.fastfood.core.applications.ports.*;
 import com.fiap.techchallenge.fastfood.core.domain.*;
 import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 import com.fiap.techchallenge.fastfood.core.exceptions.ProductNotFoundException;
-import com.fiap.techchallenge.fastfood.core.validators.*;
+import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
+import com.fiap.techchallenge.fastfood.core.validators.OrderValidator;
+import com.fiap.techchallenge.fastfood.core.validators.UserValidator;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -80,23 +84,32 @@ public class OrderService implements OrderServicePort {
         return order;
     }
 
-    public List<Order> findByStatus(String orderStatus) {
-        this.orderValidator.validateOrderStatusExists(orderStatus);
+    public List<Order> findOrdersByQueryParams(String orderStatus, Long userId) {
+        Specification<OrderEntity> filters = Specification.where(null);
 
-        OrderStatus status = OrderStatus.valueOf(orderStatus);
-        return this.orderRepositoryPort.findByStatus(status);
-    }
+        if (orderStatus != null) {
+            this.orderValidator.validateOrderStatusExists(orderStatus);
+            filters = filters.and((root, query, cb) -> cb.equal(root.get("orderStatus"), OrderStatus.valueOf(orderStatus)));
+        }
 
-    public List<Order> findByUserId(Long userId) {
-        this.userValidator.validateUserExistsById(userId);
-        return this.orderRepositoryPort.findByUserId(userId);
+        if (userId != null) {
+            this.userValidator.validateUserExistsById(userId);
+            filters = filters.and((root, query, cb) -> cb.equal(root.get("user").get("id"), userId));
+        }
+
+        List<Order> orders = this.orderRepositoryPort.findOrdersByQueryParams(filters);
+
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException();
+        }
+
+        return orders;
     }
 
     public void updateOrderStatus(Long orderId, String orderStatus) {
         this.orderValidator.validateOrderExistsById(orderId);
         this.orderValidator.validateOrderStatusExists(orderStatus);
 
-        OrderStatus status = OrderStatus.valueOf(orderStatus);
-        this.orderRepositoryPort.updateOrderStatus(orderId, status);
+        this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus));
     }
 }
