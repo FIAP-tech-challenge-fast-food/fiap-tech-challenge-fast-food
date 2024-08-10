@@ -99,13 +99,13 @@ public class OrderService implements OrderServicePort {
         return this.orderRepositoryPort.findByUserId(userId);
     }
 
-//    public List<Order> findByStatusAndUserId(String orderStatus, Long userId) {
-//        this.orderValidator.validateOrderStatusExists(orderStatus);
-//        this.userValidator.validateUserExistsById(userId);
-//
-//        OrderStatus status = OrderStatus.valueOf(orderStatus);
-//        return this.orderRepositoryPort.findByStatusAndUserId(status, userId);
-//    }
+    public List<Order> findByOrderStatusAndUserId(String orderStatus, Long userId) {
+        this.orderValidator.validateOrderStatusExists(orderStatus);
+        this.userValidator.validateUserExistsById(userId);
+
+        OrderStatus status = OrderStatus.valueOf(orderStatus);
+        return this.orderRepositoryPort.findByStatusAndUserId(status, userId);
+    }
 
     public void updateOrderStatus(Long orderId, String orderStatus) {
         this.orderValidator.validateOrderExistsById(orderId);

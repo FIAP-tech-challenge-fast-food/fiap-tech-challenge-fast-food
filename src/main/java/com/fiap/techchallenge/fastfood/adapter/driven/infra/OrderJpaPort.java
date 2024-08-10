@@ -75,14 +75,12 @@ public class OrderJpaPort implements OrderRepositoryPort {
         return mapToOrdersWithItems(orderEntities);
     }
 
-//    @Override
-//    public List<Order> findByStatusAndUserId(OrderStatus orderStatus, Long userId) {
-//        UserEntity userEntity = new UserEntity();
-//        userEntity.setId(userId);
-//        List<OrderEntity> orderEntities = this.orderRepository.findByStatusAndUserId(orderStatus, userEntity);
-//
-//        return mapToOrdersWithItems(orderEntities);
-//    }
+    @Override
+    public List<Order> findByStatusAndUserId(OrderStatus orderStatus, Long userId) {
+        List<OrderEntity> orderEntities = this.orderRepository.findByOrderStatusAndUserId(orderStatus, userId);
+
+        return mapToOrdersWithItems(orderEntities);
+    }
 
     @Override
     public void updateOrderStatus(Long orderId, OrderStatus newOrderStatus) {

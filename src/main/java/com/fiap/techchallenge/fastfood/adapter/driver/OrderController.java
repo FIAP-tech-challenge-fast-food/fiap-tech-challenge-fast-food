@@ -80,9 +80,7 @@ public class OrderController {
 
         List<Order> orders;
         if (status != null && userId != null) {
-            // TODO: implementar filtros
-            // orders = orderServicePort.findByOrderStatusAndUserId(status, userId);
-            orders = null;
+            orders = orderServicePort.findByOrderStatusAndUserId(status, userId);
         } else if (status != null) {
             orders = orderServicePort.findByStatus(status);
         } else if (userId != null) {

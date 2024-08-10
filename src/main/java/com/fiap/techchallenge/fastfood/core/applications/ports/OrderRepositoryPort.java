@@ -17,7 +17,7 @@ public interface OrderRepositoryPort {
 
     List<Order> findByUserId(Long userId);
 
-//    List<Order> findByStatusAndUserId(OrderStatus orderStatus, Long userId);
+    List<Order> findByStatusAndUserId(OrderStatus orderStatus, Long userId);
 
     void updateOrderStatus(Long orderId, OrderStatus orderStatus);
 }
