@@ -8,7 +8,7 @@ import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
 public interface PaymentRepositoryPort {
 
-    Payment registerPayment(String externalReference, Order order, LocalDateTime createdAt);
+    Payment registerPayment(String externalReference, Order order);
 
     List<Payment> findAll();
 

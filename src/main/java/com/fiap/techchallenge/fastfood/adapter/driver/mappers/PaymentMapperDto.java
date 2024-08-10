@@ -37,10 +37,8 @@ public class PaymentMapperDto {
         }
 
         return new Payment(
-                null,
                 createPaymentRequest.getExternalReference(),
-                order,
-                createPaymentRequest.getCreatedAt());
+                order);
     }
 
     public static PaymentDto toDto(Payment payment) {
