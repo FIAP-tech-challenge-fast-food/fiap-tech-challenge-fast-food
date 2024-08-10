@@ -5,9 +5,7 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemReposito
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderItemServicePort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
-import com.fiap.techchallenge.fastfood.core.validators.CategoryValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
-import com.fiap.techchallenge.fastfood.core.validators.ProductValidator;
 
 import java.util.List;
 
@@ -20,8 +18,7 @@ public class OrderItemService implements OrderItemServicePort {
     public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort, ProductRepositoryPort productRepositoryPort,
                             CategoryRepositoryPort categoryRepositoryPort) {
         this.orderItemRepositoryPort = orderItemRepositoryPort;
-        this.orderItemValidator = new OrderItemValidator(orderItemRepositoryPort, new ProductValidator(productRepositoryPort,
-                new CategoryValidator(categoryRepositoryPort)));
+        this.orderItemValidator = new OrderItemValidator();
     }
 
     @Override

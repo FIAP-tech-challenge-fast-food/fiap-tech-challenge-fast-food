@@ -41,8 +41,8 @@ public class BeansConfig {
 
     @Bean
     public PaymentServicePort paymentServiceImpl(PaymentRepositoryPort paymentRepositoryPort,
-            OrderRepositoryPort orderRepositoryPort) {
-        return new PaymentService(paymentRepositoryPort, orderRepositoryPort);
+            OrderRepositoryPort orderRepositoryPort, UserRepositoryPort userRepositoryPort) {
+        return new PaymentService(paymentRepositoryPort, orderRepositoryPort, userRepositoryPort);
     }
 
 }

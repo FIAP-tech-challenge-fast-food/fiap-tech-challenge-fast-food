@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.PaymentDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreatePaymentRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.PaymentMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
@@ -42,8 +43,8 @@ public class PaymentController {
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
     })
     public ResponseEntity<PaymentDto> register(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be created", required = true) @RequestBody PaymentDto paymentDto) {
-        Payment payment = paymentServicePort.registerPayment(PaymentMapperDto.toDomain(paymentDto));
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be created", required = true) @RequestBody CreatePaymentRequest createPaymentRequest) {
+        Payment payment = paymentServicePort.registerPayment(PaymentMapperDto.toDomain(createPaymentRequest));
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(payment.getId()).toUri();
