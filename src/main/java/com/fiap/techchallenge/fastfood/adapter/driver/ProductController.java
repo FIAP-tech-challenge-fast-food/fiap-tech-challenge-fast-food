@@ -27,7 +27,7 @@ public class ProductController {
     @Autowired
     private ProductServicePort productServicePort;
 
-    @GetMapping("/")
+    @GetMapping()
     @Operation(summary = "Get products by category ID", description = "Retrieve a list of products by their category ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
