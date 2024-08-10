@@ -89,18 +89,6 @@ public class OrderService implements OrderServicePort {
         return order;
     }
 
-    public List<Order> findByStatus(String orderStatus) {
-        this.orderValidator.validateOrderStatusExists(orderStatus);
-
-        OrderStatus status = OrderStatus.valueOf(orderStatus);
-        return this.orderRepositoryPort.findByStatus(status);
-    }
-
-    public List<Order> findByUserId(Long userId) {
-        this.userValidator.validateUserExistsById(userId);
-        return this.orderRepositoryPort.findByUserId(userId);
-    }
-
     public List<Order> findOrdersByQueryParams(String orderStatus, Long userId) {
         Specification<OrderEntity> filters = Specification.where(null);
 

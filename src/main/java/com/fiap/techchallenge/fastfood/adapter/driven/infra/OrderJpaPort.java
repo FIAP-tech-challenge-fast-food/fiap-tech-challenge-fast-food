@@ -2,7 +2,6 @@ package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.OrderItemEntity;
-import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.UserEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderItemMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.OrderMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.OrderItemRepository;
@@ -54,26 +53,6 @@ public class OrderJpaPort implements OrderRepositoryPort {
         List<OrderItemEntity> orderItemsEntities = this.orderItemRepository.findByOrderId(orderEntity.getId());
 
         return OrderMapper.toDomain(orderEntity, orderItemsEntities);
-    }
-
-    @Override
-    public List<Order> findByStatus(OrderStatus orderStatus) {
-        List<OrderEntity> orderEntities = this.orderRepository.findByOrderStatus(orderStatus);
-
-        if (orderEntities.isEmpty()) {
-            throw new OrderNotFoundException(orderStatus);
-        }
-
-        return mapToOrdersWithItems(orderEntities);
-    }
-
-    @Override
-    public List<Order> findByUserId(Long userId) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(userId);
-        List<OrderEntity> orderEntities = this.orderRepository.findByUser(userEntity);
-
-        return mapToOrdersWithItems(orderEntities);
     }
 
     @Override

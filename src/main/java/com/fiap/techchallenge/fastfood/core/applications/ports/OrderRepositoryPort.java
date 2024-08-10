@@ -15,10 +15,6 @@ public interface OrderRepositoryPort {
 
     Order findById(Long id);
 
-    List<Order> findByStatus(OrderStatus orderStatus);
-
-    List<Order> findByUserId(Long userId);
-
     List<Order> findOrdersByQueryParams(Specification<OrderEntity> filters);
 
     void updateOrderStatus(Long orderId, OrderStatus orderStatus);

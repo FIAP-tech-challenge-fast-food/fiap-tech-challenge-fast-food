@@ -13,10 +13,6 @@ public interface OrderServicePort {
 
     Order findById(Long id);
 
-    List<Order> findByStatus(String orderStatus);
-
-    List<Order> findByUserId(Long userId);
-
     List<Order> findOrdersByQueryParams(String orderStatus, Long userId);
 
     void updateOrderStatus(Long orderId, String orderStatus);
