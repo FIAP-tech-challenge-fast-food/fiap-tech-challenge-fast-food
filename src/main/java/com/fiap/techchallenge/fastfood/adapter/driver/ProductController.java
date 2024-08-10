@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.adapter.driver;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.ProductDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.ProductRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.ProductMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
@@ -61,7 +62,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(ProductMapperDto.toDto(product));
     }
 
-    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new product", description = "Register a new product in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product created successfully"),
@@ -69,9 +70,9 @@ public class ProductController {
     })
     public ResponseEntity<ProductDto> register(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be created", required = true)
-            @RequestBody @Valid ProductDto productDto) {
+            @RequestBody @Valid ProductRequest productRequest) {
 
-        Product createdProduct = productServicePort.register(ProductMapperDto.toDomain(productDto));
+        Product createdProduct = productServicePort.register(ProductMapperDto.toDomain(productRequest));
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(createdProduct.getId()).toUri();

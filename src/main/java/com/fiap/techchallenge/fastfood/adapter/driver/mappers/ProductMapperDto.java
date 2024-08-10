@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.mappers;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.ProductDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.ProductRequest;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
 
@@ -34,5 +35,16 @@ public class ProductMapperDto {
                 product.getDescription(),
                 categoryId,
                 product.getPrice());
+    }
+
+    public static Product toDomain(ProductRequest productRequest) {
+        if(productRequest == null) {
+            return null;
+        }
+
+        return new Product(productRequest.getName(),
+                productRequest.getDescription(),
+                new Category(productRequest.getCategoryId()),
+                productRequest.getPrice());
     }
 }
