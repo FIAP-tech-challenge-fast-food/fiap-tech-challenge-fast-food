@@ -78,16 +78,7 @@ public class OrderController {
             @Parameter(description = "Status of orders to be retrieved") @RequestParam(required = false) String status,
             @Parameter(description = "User ID of orders to be retrieved") @RequestParam(required = false) Long userId) {
 
-        List<Order> orders;
-        if (status != null && userId != null) {
-            orders = orderServicePort.findByOrderStatusAndUserId(status, userId);
-        } else if (status != null) {
-            orders = orderServicePort.findByStatus(status);
-        } else if (userId != null) {
-            orders = orderServicePort.findByUserId(userId);
-        } else {
-            orders = orderServicePort.findAll();
-        }
+        List<Order> orders = orderServicePort.findOrdersByQueryParams(status, userId);
 
         if (orders.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());

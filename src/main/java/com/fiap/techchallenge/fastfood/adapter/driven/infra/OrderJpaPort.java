@@ -12,6 +12,7 @@ import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,8 +77,8 @@ public class OrderJpaPort implements OrderRepositoryPort {
     }
 
     @Override
-    public List<Order> findByStatusAndUserId(OrderStatus orderStatus, Long userId) {
-        List<OrderEntity> orderEntities = this.orderRepository.findByOrderStatusAndUserId(orderStatus, userId);
+    public List<Order> findOrdersByQueryParams(Specification<OrderEntity> filters) {
+        List<OrderEntity> orderEntities = orderRepository.findAll(filters);
 
         return mapToOrdersWithItems(orderEntities);
     }
