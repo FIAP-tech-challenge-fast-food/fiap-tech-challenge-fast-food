@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -66,36 +67,33 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(OrderMapperDto.toDto(order));
     }
 
-    @GetMapping("/order-status")
-    @Operation(summary = "Get all orders by status", description = "Retrieve a list of all orders by status")
+    @GetMapping()
+    @Operation(summary = "Retrieve orders based on filter criteria", description = "Retrieve a list of orders by status and/or user ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of orders retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Order status provided is invalid"),
-            @ApiResponse(responseCode = "404", description = "No order was found")
+            @ApiResponse(responseCode = "400", description = "Invalid filter criteria provided"),
+            @ApiResponse(responseCode = "404", description = "No orders found based on the provided criteria")
     })
-    public ResponseEntity<List<OrderDto>> findByStatus(
-            @Parameter(description = "Status of orders to be retrieved", required = true) @RequestParam String status) {
+    public ResponseEntity<List<OrderDto>> findOrders(
+            @Parameter(description = "Status of orders to be retrieved") @RequestParam(required = false) String status,
+            @Parameter(description = "User ID of orders to be retrieved") @RequestParam(required = false) Long userId) {
 
-        List<Order> orders = orderServicePort.findByStatus(status);
+        List<Order> orders;
+        if (status != null && userId != null) {
+            // TODO: implementar filtros
+            // orders = orderServicePort.findByOrderStatusAndUserId(status, userId);
+            orders = null;
+        } else if (status != null) {
+            orders = orderServicePort.findByStatus(status);
+        } else if (userId != null) {
+            orders = orderServicePort.findByUserId(userId);
+        } else {
+            orders = orderServicePort.findAll();
+        }
 
-        List<OrderDto> ordersDtos = orders.stream()
-                .map(OrderMapperDto::toDto)
-                .toList();
-
-        return ResponseEntity.status(HttpStatus.OK).body(ordersDtos);
-    }
-
-    @GetMapping("/by-user")
-    @Operation(summary = "Get all orders by user", description = "Retrieve a list of all orders by user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of orders retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "User ID provided is invalid"),
-            @ApiResponse(responseCode = "404", description = "No order was found")
-    })
-    public ResponseEntity<List<OrderDto>> findByUser(
-            @Parameter(description = "User ID of orders to be retrieved", required = true) @RequestParam Long userId) {
-
-        List<Order> orders = orderServicePort.findByUserId(userId);
+        if (orders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
 
         List<OrderDto> ordersDtos = orders.stream()
                 .map(OrderMapperDto::toDto)

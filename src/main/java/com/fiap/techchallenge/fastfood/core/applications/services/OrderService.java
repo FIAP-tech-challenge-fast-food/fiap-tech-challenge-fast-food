@@ -4,7 +4,9 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.*;
 import com.fiap.techchallenge.fastfood.core.domain.*;
 import com.fiap.techchallenge.fastfood.core.exceptions.OrderNotFoundException;
 import com.fiap.techchallenge.fastfood.core.exceptions.ProductNotFoundException;
-import com.fiap.techchallenge.fastfood.core.validators.*;
+import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
+import com.fiap.techchallenge.fastfood.core.validators.OrderValidator;
+import com.fiap.techchallenge.fastfood.core.validators.UserValidator;
 
 import java.util.List;
 
@@ -38,6 +40,11 @@ public class OrderService implements OrderServicePort {
         order.setTotalPrice(totalPrice);
 
         return this.orderRepositoryPort.generateOrder(order);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return this.orderRepositoryPort.findAll();
     }
 
     private OrderItem fillOrderItems(OrderItem orderItem, Order order) {
@@ -91,6 +98,14 @@ public class OrderService implements OrderServicePort {
         this.userValidator.validateUserExistsById(userId);
         return this.orderRepositoryPort.findByUserId(userId);
     }
+
+//    public List<Order> findByStatusAndUserId(String orderStatus, Long userId) {
+//        this.orderValidator.validateOrderStatusExists(orderStatus);
+//        this.userValidator.validateUserExistsById(userId);
+//
+//        OrderStatus status = OrderStatus.valueOf(orderStatus);
+//        return this.orderRepositoryPort.findByStatusAndUserId(status, userId);
+//    }
 
     public void updateOrderStatus(Long orderId, String orderStatus) {
         this.orderValidator.validateOrderExistsById(orderId);

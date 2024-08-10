@@ -9,11 +9,15 @@ public interface OrderServicePort {
 
     Order generateOrder(Long userId, List<OrderItem> orderItems);
 
+    List<Order> findAll();
+
     Order findById(Long id);
 
     List<Order> findByStatus(String orderStatus);
 
     List<Order> findByUserId(Long userId);
+
+//    List<Order> findByStatusAndUserId(String orderStatus, Long userId);
 
     void updateOrderStatus(Long orderId, String orderStatus);
 }

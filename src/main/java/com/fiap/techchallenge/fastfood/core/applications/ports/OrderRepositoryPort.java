@@ -9,11 +9,15 @@ public interface OrderRepositoryPort {
 
     Order generateOrder(Order order);
 
+    List<Order> findAll();
+
     Order findById(Long id);
 
     List<Order> findByStatus(OrderStatus orderStatus);
 
     List<Order> findByUserId(Long userId);
+
+//    List<Order> findByStatusAndUserId(OrderStatus orderStatus, Long userId);
 
     void updateOrderStatus(Long orderId, OrderStatus orderStatus);
 }
