@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,10 +31,13 @@ public class OrderEntity implements Serializable {
     private UserEntity user;
 
     @Column(name="order_status")
-    private OrderStatus orderStatus = OrderStatus.WAITING_PAYMENT;
+    private OrderStatus orderStatus;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
+    private List<OrderItemEntity> orderItems;
 }

@@ -28,14 +28,8 @@ public class OrderItemValidator {
             throw new IllegalArgumentException("Product ID in order item cannot be less than or equal to zero");
         }
 
-        this.productValidator.validateProductExistsById(orderItem.getProduct().getId());
-
         if (orderItem.getQuantity() == null || orderItem.getQuantity() <= 0) {
             throw new IllegalArgumentException("Product quantity in order item cannot be null or less than or equal to zero");
-        }
-
-        if (orderItem.getPrice() == null || orderItem.getPrice() <= 0) {
-            throw new IllegalArgumentException("Product price in order item cannot be null or less than or equal to zero");
         }
     }
 

@@ -3,11 +3,10 @@ package com.fiap.techchallenge.fastfood.adapter.driver;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateOrderStatusRequest;
-import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
-import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,14 +23,14 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping("/orders")
 @Tag(name = "Order Management", description = "Operations related to order management")
 public class OrderController {
 
     @Autowired
     private OrderServicePort orderServicePort;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new order", description = "Create a new order in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Order created successfully"),
@@ -40,8 +40,8 @@ public class OrderController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Order to be created", required = true) @RequestBody CreateOrderRequest request) {
 
         Order createdOrder = orderServicePort.generateOrder(
-                request.getUser(),
-                OrderItemMapperDto.mapToDomain(request.getItems())
+                request.getUserId(),
+                OrderItemMapperRequest.mapToDomain(request.getItems())
         );
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -74,7 +74,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "No order was found")
     })
     public ResponseEntity<List<OrderDto>> findByStatus(
-            @Parameter(description = "Status of orders to be retrieved", required = true) @RequestParam OrderStatus status) {
+            @Parameter(description = "Status of orders to be retrieved", required = true) @RequestParam String status) {
 
         List<Order> orders = orderServicePort.findByStatus(status);
 

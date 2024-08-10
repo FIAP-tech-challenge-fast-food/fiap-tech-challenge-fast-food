@@ -14,16 +14,16 @@ public enum OrderStatus {
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
-    public static boolean isValid(int value) {
-        for (OrderStatus status : OrderStatus.values()) {
-            if (status.getValue() == value) {
-                return true;
-            }
+    public static boolean isValid(String value) {
+        if (value == null || value.isEmpty()) {
+            return false;
         }
-        return false;
+
+        try {
+            OrderStatus.valueOf(value);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }

@@ -70,7 +70,24 @@ public class OrderMapper {
                 order.getId(),
                 userEntity,
                 order.getOrderStatus(),
-                order.getCreatedAt()
+                order.getCreatedAt(),
+                null
+        );
+    }
+
+    public static Order toDomain(OrderEntity orderEntity) {
+        if (orderEntity == null) {
+            return null;
+        }
+
+        List<OrderItem> orderItems = orderEntity.getOrderItems().stream().map(OrderItemMapper::toDomain).toList();
+
+        return new Order(
+                orderEntity.getId(),
+                UserMapper.toDomain(orderEntity.getUser()),
+                orderEntity.getOrderStatus(),
+                orderEntity.getCreatedAt(),
+                orderItems
         );
     }
 }
