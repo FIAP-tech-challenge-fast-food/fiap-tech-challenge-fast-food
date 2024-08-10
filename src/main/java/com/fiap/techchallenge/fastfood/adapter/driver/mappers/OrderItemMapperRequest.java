@@ -1,8 +1,6 @@
 package com.fiap.techchallenge.fastfood.adapter.driver.mappers;
 
-import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderItemDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.OrderItemRequest;
-import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderItem;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
@@ -23,7 +21,7 @@ public class OrderItemMapperRequest {
     }
 
     public static List<OrderItem> mapToDomain(List<OrderItemRequest> items) {
-        return items != null ?
-                items.stream().map(OrderItemMapperRequest::toDomain).collect(Collectors.toList()) : new ArrayList<>();
+        return items != null ? items.stream().map(OrderItemMapperRequest::toDomain).collect(Collectors.toList())
+                : new ArrayList<>();
     }
 }

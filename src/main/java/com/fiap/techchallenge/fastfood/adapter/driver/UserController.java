@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.UserDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateUserRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.UserMapperDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.mappers.UserMapperRequest;
 import com.fiap.techchallenge.fastfood.core.applications.ports.UserServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.User;
 
@@ -33,9 +35,9 @@ public class UserController {
                         @ApiResponse(responseCode = "400", description = "Invalid input provided")
         })
         public ResponseEntity<UserDto> register(
-                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User details to be created", required = true) @RequestBody UserDto user) {
+                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User details to be created", required = true) @RequestBody CreateUserRequest request) {
 
-                User createdUser = userServicePort.register(UserMapperDto.toDomain(user));
+                User createdUser = userServicePort.register(UserMapperRequest.toDomain(request));
 
                 URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(createdUser.getId()).toUri();

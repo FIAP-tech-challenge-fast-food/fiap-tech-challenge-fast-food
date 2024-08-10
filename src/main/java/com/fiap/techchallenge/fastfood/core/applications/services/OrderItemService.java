@@ -14,9 +14,9 @@ public class OrderItemService implements OrderItemServicePort {
     private final OrderItemRepositoryPort orderItemRepositoryPort;
     private final OrderItemValidator orderItemValidator;
 
-
-    public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort, ProductRepositoryPort productRepositoryPort,
-                            CategoryRepositoryPort categoryRepositoryPort) {
+    public OrderItemService(OrderItemRepositoryPort orderItemRepositoryPort,
+            ProductRepositoryPort productRepositoryPort,
+            CategoryRepositoryPort categoryRepositoryPort) {
         this.orderItemRepositoryPort = orderItemRepositoryPort;
         this.orderItemValidator = new OrderItemValidator();
     }
@@ -27,18 +27,18 @@ public class OrderItemService implements OrderItemServicePort {
 
         calculatePrice(orderItem);
 
-        this.orderItemRepositoryPort.register(orderItem.getProduct(), orderItem.getOrder(), orderItem.getPrice(), orderItem.getQuantity());
+        this.orderItemRepositoryPort.register(orderItem.getProduct(), orderItem.getOrder(), orderItem.getPrice(),
+                orderItem.getQuantity());
     }
 
     @Override
     public List<OrderItem> findByOrderId(Long orderId) {
-        //TODO: Colocar o validator order
+        // TODO: Colocar o validator order
         return this.orderItemRepositoryPort.findByOrderId(orderId);
     }
 
     private void calculatePrice(OrderItem orderItem) {
         Double price = orderItem.getProduct().getPrice() * orderItem.getQuantity();
-
         orderItem.setPrice(price);
     }
 

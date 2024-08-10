@@ -20,7 +20,8 @@ public class OrderItemValidator {
         }
 
         if (orderItem.getQuantity() == null || orderItem.getQuantity() <= 0) {
-            throw new IllegalArgumentException("Product quantity in order item cannot be null or less than or equal to zero");
+            throw new IllegalArgumentException(
+                    "Product quantity in order item cannot be null or less than or equal to zero");
         }
     }
 

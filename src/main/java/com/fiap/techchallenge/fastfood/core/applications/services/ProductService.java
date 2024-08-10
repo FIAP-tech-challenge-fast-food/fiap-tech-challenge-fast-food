@@ -12,7 +12,6 @@ import java.util.List;
 public class ProductService implements ProductServicePort {
 
     private final ProductRepositoryPort productRepositoryPort;
-
     private final ProductValidator productValidator;
 
     public ProductService(ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort) {
