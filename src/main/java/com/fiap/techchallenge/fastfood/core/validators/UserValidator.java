@@ -42,4 +42,18 @@ public class UserValidator {
             throw new UserNotFoundException(cpf);
         }
     }
+
+    public void validateUserIdentifier(String identifierType) {
+        enum IdentifierType {
+            EMAIL,
+            CPF
+        }
+
+        try {
+            IdentifierType.valueOf(identifierType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid identifier type: %s", identifierType));
+        }
+    }
 }

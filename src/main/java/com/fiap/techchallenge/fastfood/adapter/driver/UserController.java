@@ -28,7 +28,7 @@ public class UserController {
         @Autowired
         private UserServicePort userServicePort;
 
-        @PostMapping
+        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Create a new user", description = "Register a new user in the system")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "User created successfully"),
@@ -38,14 +38,13 @@ public class UserController {
                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User details to be created", required = true) @RequestBody CreateUserRequest request) {
 
                 User createdUser = userServicePort.register(UserMapperRequest.toDomain(request));
-
                 URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(createdUser.getId()).toUri();
 
                 return ResponseEntity.created(uri).body(UserMapperDto.toDto(createdUser));
         }
 
-        @GetMapping
+        @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Get all users", description = "Retrieve a list of all users")
         @ApiResponse(responseCode = "200", description = "List of users retrieved successfully")
         public ResponseEntity<List<UserDto>> findAll() {
@@ -55,7 +54,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.OK).body(usersDtos);
         }
 
-        @GetMapping("/{id}")
+        @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Get user by ID", description = "Retrieve a user by their unique ID")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
@@ -68,29 +67,17 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
         }
 
-        @GetMapping("/by-email")
-        @Operation(summary = "Get user by email", description = "Retrieve a user by their email address")
+        @GetMapping(path = "/{type}/{value}", produces = MediaType.APPLICATION_JSON_VALUE)
+        @Operation(summary = "Get user by type", description = "Retrieve a user by their email or cpf")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
                         @ApiResponse(responseCode = "404", description = "User not found")
         })
-        public ResponseEntity<UserDto> findByEmail(
-                        @Parameter(description = "Email address of the user to be retrieved", required = true) @RequestParam String email) {
+        public ResponseEntity<UserDto> findUserByIdentifier(
+                        @Parameter(description = "Type of the search, either 'email' or 'cpf'", required = true) @PathVariable String type,
+                        @Parameter(description = "Value of the type to be searched", required = true) @PathVariable String value) {
 
-                User user = userServicePort.findByEmail(email);
-                return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
-        }
-
-        @GetMapping("/by-cpf")
-        @Operation(summary = "Get user by cpf", description = "Retrieve a user by their cpf")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
-                        @ApiResponse(responseCode = "404", description = "User not found")
-        })
-        public ResponseEntity<UserDto> findByCpf(
-                        @Parameter(description = "Cpf of the user to be retrieved", required = true) @RequestParam String cpf) {
-
-                User user = userServicePort.findByCpf(cpf);
+                User user = userServicePort.findByIdentifier(type, value);
                 return ResponseEntity.status(HttpStatus.OK).body(UserMapperDto.toDto(user));
         }
 }

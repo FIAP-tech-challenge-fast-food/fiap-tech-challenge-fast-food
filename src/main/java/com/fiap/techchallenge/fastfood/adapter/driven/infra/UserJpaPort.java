@@ -10,6 +10,7 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.UserEntity;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.UserMapper;
 import com.fiap.techchallenge.fastfood.core.applications.ports.UserRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.User;
+
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.UserRepository;
 
 @Component
@@ -54,6 +55,13 @@ public class UserJpaPort implements UserRepositoryPort {
         return userRepository.findAll().stream()
                 .filter(user -> user.getCpf().equals(cpf))
                 .findFirst()
+                .map(UserMapper::toDomain)
+                .orElse(null);
+    }
+
+    @Override
+    public User findByIdentifier(String type, String value) {
+        return userRepository.findByIdentifier(type, value)
                 .map(UserMapper::toDomain)
                 .orElse(null);
     }
