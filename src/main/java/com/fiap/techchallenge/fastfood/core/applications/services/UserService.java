@@ -21,7 +21,7 @@ public class UserService implements UserServicePort {
     @Override
     public User register(User user) {
         userValidator.validateEmailNotExists(user.getEmail());
-        userValidator.validateCpfNotExists(user.getCpf()); 
+        userValidator.validateCpfNotExists(user.getCpf());
         return this.userRepositoryPort
                 .register(new User(user.getName(), user.getEmail(), user.getCpf(), LocalDateTime.now()));
     }
@@ -47,5 +47,10 @@ public class UserService implements UserServicePort {
     public User findByCpf(String cpf) {
         userValidator.validateUserExistsByCpf(cpf);
         return this.userRepositoryPort.findByCpf(cpf);
+    }
+
+    public User findByIdentifier(String type, String value) {
+        userValidator.validateUserIdentifier(type);
+        return this.userRepositoryPort.findByIdentifier(type, value);
     }
 }

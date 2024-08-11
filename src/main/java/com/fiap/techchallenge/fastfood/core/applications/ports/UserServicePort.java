@@ -14,4 +14,6 @@ public interface UserServicePort {
     public User findByEmail(String email);
 
     public User findByCpf(String cpf);
+
+    public User findByIdentifier(String type, String value);
 }
