@@ -22,8 +22,8 @@ public class PaymentJpaPort implements PaymentRepositoryPort {
     private PaymentRepository paymentRepository;
 
     @Override
-    public Payment registerPayment(String externalReference, Order order, LocalDateTime createdAt) {
-        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(new Payment(externalReference, order, createdAt)));
+    public Payment registerPayment(String externalReference, Order order) {
+        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(new Payment(externalReference, order, LocalDateTime.now())));
 
         return PaymentMapper.toDomain(paymentEntity);
     }

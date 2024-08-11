@@ -15,6 +15,4 @@ public class CreatePaymentRequest {
 
     private Long orderId;
 
-    private LocalDateTime createdAt;
-
 }

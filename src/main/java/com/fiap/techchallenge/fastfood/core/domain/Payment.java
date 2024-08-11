@@ -12,7 +12,9 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
-    public Payment() {
+    public Payment(String externalReference, Order order) {
+        this.externalReference = externalReference;
+        this.order = order;
     }
 
     public Payment(Long id, String externalReference, Order order, LocalDateTime createdAt) {

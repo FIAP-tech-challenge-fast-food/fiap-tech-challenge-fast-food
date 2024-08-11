@@ -3,6 +3,8 @@ package com.fiap.techchallenge.fastfood.adapter.driver;
 import java.net.URI;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,19 +19,24 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@RestController
-@RequestMapping("/category")
+@RestController()
+@RequestMapping(path = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Category Management", description = "Operations related to categories management")
 public class CategoryController {
 
         @Autowired
         private CategoryServicePort categoryServicePort;
 
-        @PostMapping
+        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Create a new category", description = "Register a new category in the system")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "Category created successfully"),
-                        @ApiResponse(responseCode = "400", description = "Invalid input provided")
+                        @ApiResponse(responseCode = "400", description = "Invalid input provided", content = @Content(examples = @ExampleObject(value = """
+                                {
+                                  "timestamp": "2024-08-10T18:10:23.3837517",
+                                  "message": "Category already exists: string",
+                                  "details": "uri=/categories"
+                                }""")))
         })
         public ResponseEntity<CategoryDto> register(
                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category details to be created", required = true) @RequestBody CategoryDto category) {
@@ -57,7 +64,12 @@ public class CategoryController {
         @Operation(summary = "Get a category by ID", description = "Retrieve a category by its ID")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Category retrieved successfully"),
-                        @ApiResponse(responseCode = "404", description = "Category not found")
+                        @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(examples = @ExampleObject(value = """
+                                {
+                                  "timestamp": "2024-08-10T18:23:47.1067008",
+                                  "message": "Category not found for id: 500",
+                                  "details": "uri=/categories/500"
+                                }""")))
         })
         public ResponseEntity<CategoryDto> findById(
                         @Parameter(description = "ID of the category to retrieve", required = true) @PathVariable Long id) {
@@ -65,12 +77,22 @@ public class CategoryController {
                 return ResponseEntity.status(HttpStatus.OK).body(categoryDto);
         }
 
-        @PutMapping("/{id}")
+        @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Update a category", description = "Update the details of a category in the system")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Category updated successfully"),
-                        @ApiResponse(responseCode = "400", description = "Invalid input provided"),
-                        @ApiResponse(responseCode = "404", description = "Category not found")
+                        @ApiResponse(responseCode = "400", description = "Invalid input provided", content = @Content(examples = @ExampleObject(value = """
+                                {
+                                  "timestamp": "2024-08-10T18:10:23.3837517",
+                                  "message": "Category already exists: string",
+                                  "details": "uri=/categories"
+                                }"""))),
+                        @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(examples = @ExampleObject(value = """
+                                {
+                                  "timestamp": "2024-08-10T18:23:47.1067008",
+                                  "message": "Category not found for id: 500",
+                                  "details": "uri=/categories/500"
+                                }""")))
         })
         public ResponseEntity<CategoryDto> update(
                         @Parameter(description = "ID of the category to update", required = true) @PathVariable Long id,

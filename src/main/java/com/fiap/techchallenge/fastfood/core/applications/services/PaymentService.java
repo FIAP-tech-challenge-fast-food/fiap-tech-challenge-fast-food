@@ -31,7 +31,7 @@ public class PaymentService implements PaymentServicePort {
 
         this.orderValidator.validateOrderExistsById(payment.getOrder().getId());
 
-        Payment paymentCreated = this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder(), payment.getCreatedAt());
+        Payment paymentCreated = this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder());
 
         updateOrderStatusAccordingToPayment(payment.getExternalReference(), payment.getOrder().getId());
 

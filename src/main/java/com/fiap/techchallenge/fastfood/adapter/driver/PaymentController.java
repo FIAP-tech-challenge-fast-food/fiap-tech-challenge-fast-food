@@ -1,17 +1,15 @@
 package com.fiap.techchallenge.fastfood.adapter.driver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.PaymentDto;
@@ -44,7 +42,12 @@ public class PaymentController {
     @Operation(summary = "Register a new payment", description = "Register a new payment in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Payment created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input provided"),
+            @ApiResponse(responseCode = "404", description = "Invalid order provided", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "timestamp": "2024-08-10T18:49:21.3340294",
+                      "message": "Order not found with id: 0",
+                      "details": "uri=/payments"
+                    }""")))
     })
     public ResponseEntity<PaymentDto> register(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be created", required = true) @RequestBody CreatePaymentRequest createPaymentRequest) {
@@ -57,26 +60,20 @@ public class PaymentController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all payments", description = "Retrieve a list of all payments")
+    @Operation(summary = "Get payments", description = "Retrieve a list of payments")
     @ApiResponse(responseCode = "200", description = "List of payments retrieved successfully")
-    public ResponseEntity<List<PaymentDto>> findAll() {
-        List<Payment> payments = paymentServicePort.findAll();
-        List<PaymentDto> paymentDtos = payments.stream().map(PaymentMapperDto::toDto).collect(Collectors.toList());
+    public ResponseEntity<List<PaymentDto>> findOrder(@Parameter(description = "ID of the order to retrieve payments for") @RequestParam(required = false) Long id) {
+        List<PaymentDto> paymentDtos = new ArrayList<>();
+        if (id == null) {
+            List<Payment> payments = paymentServicePort.findAll();
+            paymentDtos = payments.stream().map(PaymentMapperDto::toDto).collect(Collectors.toList());
+        } else {
+            Payment payment = paymentServicePort.findByOrderId(id);
+            if(payment != null) {
+                paymentDtos.add(PaymentMapperDto.toDto(payment));
+            }
+        }
 
         return ResponseEntity.ok(paymentDtos);
     }
-
-    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Get payment by order ID", description = "Retrieve a payment by its order ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Payment retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Payment not found")
-    })
-    public ResponseEntity<PaymentDto> findByOrderId(
-            @Parameter(description = "Order ID of the payment to be retrieved", required = true) @PathVariable @Valid @NotNull Long id) {
-        Payment payment = paymentServicePort.findByOrderId(id);
-
-        return ResponseEntity.ok(PaymentMapperDto.toDto(payment));
-    }
-
 }
