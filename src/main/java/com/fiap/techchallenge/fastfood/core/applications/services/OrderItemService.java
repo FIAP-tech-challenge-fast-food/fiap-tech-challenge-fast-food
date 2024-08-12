@@ -33,7 +33,6 @@ public class OrderItemService implements OrderItemServicePort {
 
     @Override
     public List<OrderItem> findByOrderId(Long orderId) {
-        // TODO: Colocar o validator order
         return this.orderItemRepositoryPort.findByOrderId(orderId);
     }
 
