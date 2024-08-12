@@ -18,18 +18,23 @@ public class PaymentService implements PaymentServicePort {
     private PaymentRepositoryPort paymentRepositoryPort;
     private OrderRepositoryPort orderRepositoryPort;
     private final OrderValidator orderValidator;
+    private PaymentValidator paymentValidator;
 
     public PaymentService(PaymentRepositoryPort paymentRepositoryPort, OrderRepositoryPort orderRepositoryPort, UserRepositoryPort userRepositoryPort) {
         this.paymentRepositoryPort = paymentRepositoryPort;
         this.orderRepositoryPort = orderRepositoryPort;
         this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(), new UserValidator(userRepositoryPort));
+        this.paymentValidator = new PaymentValidator(paymentRepositoryPort);
     }
 
     @Override
     public Payment registerPayment(Payment payment) {
         PaymentValidator.validate(payment);
 
-        this.orderValidator.validateOrderExistsById(payment.getOrder().getId());
+        Long orderId = payment.getOrder().getId();
+        this.orderValidator.validateOrderExistsById(orderId);
+
+        this.paymentValidator.validateOrderHasPayment(orderId);
 
         Payment paymentCreated = this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder());
 
