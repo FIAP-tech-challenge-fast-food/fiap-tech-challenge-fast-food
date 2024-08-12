@@ -9,8 +9,14 @@
 
 ## Como iniciar com Docker:
 
+### Buildar e subir o container 
 ```bash
 docker-compose up -d --build
+```
+
+### Subir container
+```bash
+docker-compose up -d
 ```
 
 ## Documentação de API Swagger
