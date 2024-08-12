@@ -6,10 +6,8 @@ import com.fiap.techchallenge.fastfood.adapter.driver.mappers.ProductMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.ProductServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Product;
 
-import com.fiap.techchallenge.fastfood.core.exceptions.ProductNotFoundException;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.*;
