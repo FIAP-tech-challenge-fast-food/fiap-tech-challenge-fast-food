@@ -41,8 +41,8 @@ public class ProductMapper {
 
         return new ProductEntity(
                 product.getId(),
-                product.getDescription(),
                 product.getName(),
+                product.getDescription(),
                 categoryEntity,
                 product.getPrice(),
                 false);

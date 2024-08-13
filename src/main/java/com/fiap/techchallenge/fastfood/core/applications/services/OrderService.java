@@ -107,8 +107,9 @@ public class OrderService implements OrderServicePort {
     }
 
     public void updateOrderStatus(Long orderId, String orderStatus) {
-        this.orderValidator.validateOrderExistsById(orderId);
         this.orderValidator.validateOrderStatusExists(orderStatus);
+        this.orderValidator.validateOrderExistsById(orderId);
+        this.orderValidator.validateOrderCanChangeStatusTo(orderId, OrderStatus.valueOf(orderStatus));
 
         this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus));
     }
