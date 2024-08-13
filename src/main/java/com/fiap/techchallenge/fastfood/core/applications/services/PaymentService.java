@@ -1,7 +1,5 @@
 package com.fiap.techchallenge.fastfood.core.applications.services;
 
-import java.util.List;
-
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
@@ -12,6 +10,8 @@ import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderValidator;
 import com.fiap.techchallenge.fastfood.core.validators.PaymentValidator;
 import com.fiap.techchallenge.fastfood.core.validators.UserValidator;
+
+import java.util.List;
 
 public class PaymentService implements PaymentServicePort {
 
@@ -35,6 +35,8 @@ public class PaymentService implements PaymentServicePort {
         this.orderValidator.validateOrderExistsById(orderId);
 
         this.paymentValidator.validateOrderHasPayment(orderId);
+
+        this.orderValidator.validateOrderCanChangeStatusTo(orderId, OrderStatus.PAID);
 
         Payment paymentCreated = this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder());
 
