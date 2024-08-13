@@ -1,23 +1,27 @@
 package com.fiap.techchallenge.fastfood.adapter.driver;
 
-import java.net.URI;
-import java.util.List;
-
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.CategoryDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateCategoryRequest;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateCategoryRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.CategoryMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.CategoryServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Category;
-
-import io.swagger.v3.oas.annotations.*;
-import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController()
 @RequestMapping(path = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,9 +43,9 @@ public class CategoryController {
                                 }""")))
         })
         public ResponseEntity<CategoryDto> register(
-                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category details to be created", required = true) @RequestBody CategoryDto category) {
+                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category details to be created", required = true) @RequestBody CreateCategoryRequest request) {
 
-                Category createdCategory = categoryServicePort.insertCategory(CategoryMapperDto.toDomain(category));
+                Category createdCategory = categoryServicePort.insertCategory(CategoryMapperDto.toDomain(request));
 
                 URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(createdCategory.getId()).toUri();
@@ -96,8 +100,8 @@ public class CategoryController {
         })
         public ResponseEntity<CategoryDto> update(
                         @Parameter(description = "ID of the category to update", required = true) @PathVariable Long id,
-                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category details to be updated", required = true) @RequestBody CategoryDto category) {
-                Category updatedCategory = categoryServicePort.updateCategory(id, CategoryMapperDto.toDomain(category));
+                        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category details to be updated", required = true) @RequestBody UpdateCategoryRequest request) {
+                Category updatedCategory = categoryServicePort.updateCategory(id, CategoryMapperDto.toDomain(request));
                 CategoryDto categoryDto = CategoryMapperDto.toDto(updatedCategory);
                 return ResponseEntity.status(HttpStatus.OK).body(categoryDto);
         }
