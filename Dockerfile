@@ -15,7 +15,7 @@ RUN mvn clean install
 FROM openjdk:17-jdk-slim
 
 # Copia o arquivo JAR gerado no estágio de build para o estágio final
-COPY --from=build /app/target/fastfood-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=build /app/target/fastfood-1.0.0.jar /app/app.jar
 
 # Define o diretório de trabalho
 WORKDIR /app
