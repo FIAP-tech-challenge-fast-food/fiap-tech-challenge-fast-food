@@ -51,10 +51,26 @@ public class OrderJpaPort implements OrderRepositoryPort {
 
     @Override
     public List<Order> findOrdersByQueryParams(Specification<OrderEntity> filters) {
-        List<OrderEntity> orderEntities = orderRepository.findAll(filters);
-
+        Specification<OrderEntity> spec = filters.and((root, query, criteriaBuilder) -> 
+            criteriaBuilder.notEqual(root.get("orderStatus"), OrderStatus.DELIVERED));
+    
+        spec = spec.and((root, query, criteriaBuilder) -> {
+            query.orderBy(
+                criteriaBuilder.asc(
+                    criteriaBuilder.selectCase(root.get("orderStatus"))
+                        .when(OrderStatus.READY, 1)
+                        .when(OrderStatus.IN_PREPARATION, 2)
+                        .when(OrderStatus.PAID, 3)
+                ),
+                criteriaBuilder.asc(root.get("createdAt"))
+            );
+            return query.getRestriction();
+        });
+    
+        List<OrderEntity> orderEntities = orderRepository.findAll(spec);
         return mapToOrdersWithItems(orderEntities);
     }
+    
 
     @Override
     public void updateOrderStatus(Long orderId, OrderStatus newOrderStatus) {
