@@ -22,7 +22,8 @@ public class PaymentMapper {
                 paymentEntity.getId(),
                 paymentEntity.getExternalReference(),
                 order,
-                paymentEntity.getCreatedAt());
+                paymentEntity.getCreatedAt(),
+                paymentEntity.getPaymentStatus());
     }
 
     public static PaymentEntity toEntity(Payment payment) {
@@ -40,7 +41,8 @@ public class PaymentMapper {
                 payment.getId(),
                 payment.getExternalReference(),
                 order,
-                payment.getCreatedAt());
+                payment.getCreatedAt(),
+                payment.getPaymentStatus());
     }
 
 }
