@@ -121,18 +121,4 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-    @PutMapping(path = "/{id}/reference", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Update an order reference", description = "Update the reference of an order in the system")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Order reference updated successfully")
-    })
-    public ResponseEntity<OrderDto> updateReference(
-            @Parameter(description = "ID of the order to update", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New order reference to be updated", required = true) @RequestBody UpdateOrderReferenceRequest request) {
-
-        orderServicePort.updateOrderReference(id, request.getReference());
-
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
 }
