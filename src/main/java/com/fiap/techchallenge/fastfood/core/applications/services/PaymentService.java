@@ -6,6 +6,7 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePor
 import com.fiap.techchallenge.fastfood.core.applications.ports.UserRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
+import com.fiap.techchallenge.fastfood.core.utils.UUIDGenerator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderValidator;
 import com.fiap.techchallenge.fastfood.core.validators.PaymentValidator;
@@ -14,6 +15,8 @@ import com.fiap.techchallenge.fastfood.core.validators.UserValidator;
 import java.util.List;
 
 public class PaymentService implements PaymentServicePort {
+
+    private static final int DEFAULT_ORDER_REFERENCE_LENGTH = 6;
 
     private PaymentRepositoryPort paymentRepositoryPort;
     private OrderRepositoryPort orderRepositoryPort;
@@ -59,9 +62,15 @@ public class PaymentService implements PaymentServicePort {
     private void updateOrderStatusAccordingToPayment(String externalReference, Long orderId) {
         if (externalReference != null && !externalReference.isEmpty()) {
             this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.PAID);
+            this.generateOrderReferenceAfterPayment(orderId);
         } else {
             this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.CANCELED);
         }
     }
 
+    private void generateOrderReferenceAfterPayment(Long orderId) {
+        String orderReference = UUIDGenerator.generateUUID().substring(0, DEFAULT_ORDER_REFERENCE_LENGTH).toUpperCase();
+
+        this.orderRepositoryPort.updateOrderReference(orderId, orderReference);
+    }
 }

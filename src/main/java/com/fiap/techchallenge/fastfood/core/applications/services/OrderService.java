@@ -113,4 +113,11 @@ public class OrderService implements OrderServicePort {
 
         this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus));
     }
+
+    @Override
+    public void updateOrderReference(Long orderId, String reference) {
+        this.orderValidator.validateOrderExistsById(orderId);
+
+        this.orderRepositoryPort.updateOrderReference(orderId, reference);
+    }
 }

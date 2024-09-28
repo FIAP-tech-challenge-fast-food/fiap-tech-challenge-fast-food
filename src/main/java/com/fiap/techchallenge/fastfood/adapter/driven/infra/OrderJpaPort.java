@@ -65,6 +65,15 @@ public class OrderJpaPort implements OrderRepositoryPort {
         this.orderRepository.save(orderEntity);
     }
 
+    @Override
+    public void updateOrderReference(Long orderId, String reference) {
+        OrderEntity orderEntity = this.orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        orderEntity.setReference(reference);
+
+        this.orderRepository.save(orderEntity);
+    }
+
     private List<Order> mapToOrdersWithItems(List<OrderEntity> orderEntities) {
         if (orderEntities == null) {
             return null;

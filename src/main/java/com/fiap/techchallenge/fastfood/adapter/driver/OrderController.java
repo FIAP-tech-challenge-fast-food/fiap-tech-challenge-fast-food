@@ -2,6 +2,7 @@ package com.fiap.techchallenge.fastfood.adapter.driver;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateOrderReferenceRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateOrderStatusRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
@@ -117,6 +118,20 @@ public class OrderController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New order status to be updated", required = true) @RequestBody UpdateOrderStatusRequest request) {
 
         orderServicePort.updateOrderStatus(id, request.getNewStatus());
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping(path = "/{id}/reference", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Update an order reference", description = "Update the reference of an order in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order reference updated successfully")
+    })
+    public ResponseEntity<OrderDto> updateReference(
+            @Parameter(description = "ID of the order to update", required = true) @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New order reference to be updated", required = true) @RequestBody UpdateOrderReferenceRequest request) {
+
+        orderServicePort.updateOrderReference(id, request.getReference());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

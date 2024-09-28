@@ -14,4 +14,6 @@ public interface OrderServicePort {
     List<Order> findOrdersByQueryParams(String orderStatus, Long userId);
 
     void updateOrderStatus(Long orderId, String orderStatus);
+
+    void updateOrderReference(Long orderId, String reference);
 }
