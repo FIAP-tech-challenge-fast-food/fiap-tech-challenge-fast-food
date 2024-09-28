@@ -2,7 +2,6 @@ package com.fiap.techchallenge.fastfood.adapter.driven.infra.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
-import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +34,7 @@ public class OrderEntity implements Serializable {
     private OrderStatus orderStatus;
 
     @Column(name="reference")
-    private PaymentStatus reference;
+    private String reference;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @CreationTimestamp

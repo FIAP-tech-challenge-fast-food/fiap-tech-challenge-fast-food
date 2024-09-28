@@ -8,12 +8,12 @@ public class Order {
     private Long id;
     private User user;
     private OrderStatus orderStatus;
-    private PaymentStatus reference;
+    private String reference;
     private Double totalPrice;
     private LocalDateTime createdAt;
     private List<OrderItem> orderItems;
 
-    public Order(Long id, User user, OrderStatus orderStatus, PaymentStatus reference, Double totalPrice, LocalDateTime createdAt, List<OrderItem> orderItems) {
+    public Order(Long id, User user, OrderStatus orderStatus, String reference, Double totalPrice, LocalDateTime createdAt, List<OrderItem> orderItems) {
         this.id = id;
         this.user = user;
         this.orderStatus = orderStatus;
@@ -68,11 +68,11 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public PaymentStatus getReference() {
+    public String getReference() {
         return reference;
     }
 
-    public void setReference(PaymentStatus reference) {
+    public void setReference(String reference) {
         this.reference = reference;
     }
 
