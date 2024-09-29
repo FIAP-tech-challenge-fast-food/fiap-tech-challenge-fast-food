@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.fastfood.core.applications.ports;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fiap.techchallenge.fastfood.core.domain.Order;
@@ -13,5 +12,9 @@ public interface PaymentRepositoryPort {
     List<Payment> findAll();
 
     Payment findByOrderId(Long orderId);
+
+    Payment save(Payment payment);
+
+    Payment findByExternalReference(String externalReference);
 
 }

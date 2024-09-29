@@ -44,4 +44,19 @@ public class PaymentJpaPort implements PaymentRepositoryPort {
         return PaymentMapper.toDomain(paymentEntity);
     }
 
+    @Override
+    public Payment save(Payment payment) {
+        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(payment));
+
+        return PaymentMapper.toDomain(paymentEntity);
+    }
+
+    @Override
+    public Payment findByExternalReference(String externalReference) {
+        PaymentEntity paymentEntity = this.paymentRepository.findByExternalReference(externalReference);
+
+        return PaymentMapper.toDomain(paymentEntity);
+    }
+
+
 }
