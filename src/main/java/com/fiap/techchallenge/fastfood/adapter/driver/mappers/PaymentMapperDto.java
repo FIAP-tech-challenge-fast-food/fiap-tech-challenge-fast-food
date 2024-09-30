@@ -22,7 +22,8 @@ public class PaymentMapperDto {
                 paymentDto.getId(),
                 paymentDto.getExternalReference(),
                 order,
-                paymentDto.getCreatedAt());
+                paymentDto.getCreatedAt(),
+                paymentDto.getPaymentStatus());
     }
 
     public static Payment toDomain(CreatePaymentRequest createPaymentRequest) {
@@ -56,7 +57,8 @@ public class PaymentMapperDto {
                 payment.getId(), 
                 payment.getExternalReference(), 
                 orderId, 
-                payment.getCreatedAt());
+                payment.getCreatedAt(),
+                payment.getPaymentStatus());
     }
 
 }
