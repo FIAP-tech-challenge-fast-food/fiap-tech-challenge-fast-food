@@ -6,5 +6,7 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.PaymentEnti
 
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
   
-  PaymentEntity findByOrderId(Long orderId);
+    PaymentEntity findByOrderId(Long orderId);
+
+    PaymentEntity findByExternalReference(String externalReference);
 }
