@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fiap-tech-challenge-svc
+  name: fiap-tech-challenge-loadbalancer-svc
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: fiap-tech-challenge
+  type: LoadBalancer
