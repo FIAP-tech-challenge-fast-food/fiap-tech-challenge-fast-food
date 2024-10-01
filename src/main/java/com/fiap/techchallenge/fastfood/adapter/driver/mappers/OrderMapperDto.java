@@ -30,6 +30,7 @@ public class OrderMapperDto {
                 orderDto.getId(),
                 new User(orderDto.getUserId()),
                 orderDto.getOrderStatus(),
+                orderDto.getReference(),
                 totalPrice,
                 orderDto.getCreatedAt(),
                 orderItems
@@ -67,6 +68,7 @@ public class OrderMapperDto {
                 order.getId(),
                 userDto.getId(),
                 order.getOrderStatus(),
+                order.getReference(),
                 totalPrice,
                 order.getCreatedAt(),
                 orderItemsDto

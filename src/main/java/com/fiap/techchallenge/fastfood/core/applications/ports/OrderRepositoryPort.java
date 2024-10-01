@@ -16,4 +16,6 @@ public interface OrderRepositoryPort {
     List<Order> findOrdersByQueryParams(Specification<OrderEntity> filters);
 
     void updateOrderStatus(Long orderId, OrderStatus orderStatus);
+
+    void updateOrderReference(Long orderId, String reference);
 }
