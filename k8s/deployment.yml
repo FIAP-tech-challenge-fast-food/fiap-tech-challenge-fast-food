@@ -5,36 +5,21 @@ metadata:
   labels:
     app: fiap-tech-challenge
 spec:
-  template:
-    metadata:
-      name: fiap-tech-challenge
-      labels:
-        app: fiap-tech-challenge
-    spec:
-      containers:
-        - name:  c-fiap-tech-challenge
-          image: viniciuslvsrv/fiap-tech-challenge:v2
-          ports:
-            - containerPort: 80         
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            periodSeconds: 10
-            failureThreshold: 3
-            initialDelaySeconds: 40  # Aumentado para 40 segundos
-
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            periodSeconds: 10
-            failureThreshold: 5
-            initialDelaySeconds: 10  # Aumentado para 10 segundos
-          resources:
-            requests:
-              cpu: 1m
   replicas: 1
   selector:
     matchLabels:
       app: fiap-tech-challenge
+  template:
+    metadata:
+      labels:
+        app: fiap-tech-challenge
+    spec:
+      containers:
+        - name: c-fiap-tech-challenge
+          image: viniciuslvsrv/fiap-tech-challenge:v3
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "1m"   
+              memory: "128Mi"

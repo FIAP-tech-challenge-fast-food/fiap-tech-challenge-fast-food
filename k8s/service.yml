@@ -6,9 +6,9 @@ metadata:
   name: fiap-tech-challenge-loadbalancer-svc
 spec:
   ports:
-  - port: 80
+  - port: 8080
     protocol: TCP
-    targetPort: 80
+    targetPort: 8080
   selector:
     app: fiap-tech-challenge
   type: LoadBalancer
