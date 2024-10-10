@@ -33,6 +33,9 @@ public class OrderEntity implements Serializable {
     @Column(name="order_status")
     private OrderStatus orderStatus;
 
+    @Column(name="reference")
+    private String reference;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @CreationTimestamp
     @Column(name = "created_at")
