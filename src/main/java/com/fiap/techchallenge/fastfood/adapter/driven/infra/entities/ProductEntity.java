@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra.entities;
 
-import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

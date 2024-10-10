@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.fastfood.adapter.driver;
+package com.fiap.techchallenge.fastfood.adapter.driver.controllers.api;
 
 import java.util.ArrayList;
 import java.util.List;

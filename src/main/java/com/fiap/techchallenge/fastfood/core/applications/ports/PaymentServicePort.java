@@ -3,7 +3,6 @@ package com.fiap.techchallenge.fastfood.core.applications.ports;
 import java.util.List;
 
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
-import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 
 public interface PaymentServicePort {
 
