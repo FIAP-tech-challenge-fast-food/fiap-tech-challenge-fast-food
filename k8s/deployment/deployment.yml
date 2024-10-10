@@ -5,10 +5,15 @@ metadata:
   labels:
     app: fiap-tech-challenge
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: fiap-tech-challenge
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1        
   template:
     metadata:
       labels:
@@ -16,10 +21,13 @@ spec:
     spec:
       containers:
         - name: c-fiap-tech-challenge
-          image: viniciuslvsrv/fiap-tech-challenge:v3
+          image: viniciuslvsrv/fiap-tech-challenge:v4 
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           resources:
             requests:
-              cpu: "1m"   
-              memory: "128Mi"
+              cpu: "30m"
+              memory: "499Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"

@@ -6,7 +6,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: mysql  
   template:
     metadata:
       labels:
@@ -22,3 +22,17 @@ spec:
           value: fastfood
         ports:
         - containerPort: 3306
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+        resources:                  
+          requests:
+            cpu: "100m"            
+            memory: "256Mi"        
+          limits:
+            cpu: "500m"            
+            memory: "1Gi"      
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc

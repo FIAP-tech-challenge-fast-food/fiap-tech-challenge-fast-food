@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.fastfood.adapter.driver;
+package com.fiap.techchallenge.fastfood.adapter.driver.controllers.api;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.CategoryDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateCategoryRequest;
