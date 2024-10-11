@@ -69,7 +69,7 @@ Após executar basta substituir as subnets nos comandos indicados conforme neces
    aws eks create-cluster \
        --name fiap-tech-challenge \
        --role-arn arn:aws:iam::581324664826:role/LabRole \
-       --resources-vpc-config subnetIds=subnet-07c648bd511d5831e,subnet-0388a4fdaf18dc48e,subnet-08e569388c3189bef,subnet-0e073d07f871dbc35,subnet-0d850ece39300ba2c,endpointPublicAccess=true,endpointPrivateAccess=true,publicAccessCidrs=0.0.0.0/0 \
+       --resources-vpc-config subnetIds=subnet-050614f94dcd289e3,subnet-0e958b3dafe94798f,subnet-0bbd0181addd4f9d4,subnet-04b1e5f4be8df1230,subnet-03fd0bd5d83b10864,endpointPublicAccess=true,endpointPrivateAccess=true,publicAccessCidrs=0.0.0.0/0 \
        --kubernetes-version 1.31 \
        --logging "clusterLogging=[{types=[api,audit,authenticator,controllerManager,scheduler],enabled=false}]" \
        --client-request-token $(uuidgen) \
@@ -97,7 +97,7 @@ Após executar basta substituir as subnets nos comandos indicados conforme neces
        --cluster-name fiap-tech-challenge \
        --nodegroup-name fiap-tech-nodegroup \
        --node-role arn:aws:iam::581324664826:role/LabRole \
-       --subnets subnet-07c648bd511d5831e subnet-0388a4fdaf18dc48e subnet-08e569388c3189bef subnet-0e073d07f871dbc35 subnet-0d850ece39300ba2c \
+       --subnets subnet-050614f94dcd289e3 subnet-0e958b3dafe94798f subnet-0bbd0181addd4f9d4 subnet-04b1e5f4be8df1230 subnet-03fd0bd5d83b10864 \
        --instance-types t3.medium \
        --scaling-config minSize=1,maxSize=3,desiredSize=2
    ```

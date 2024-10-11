@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: c-fiap-tech-challenge
-          image: viniciuslvsrv/fiap-tech-challenge:v4 
+          image: viniciuslvsrv/fiap-tech-challenge:v5
           ports:
             - containerPort: 8080
           resources:

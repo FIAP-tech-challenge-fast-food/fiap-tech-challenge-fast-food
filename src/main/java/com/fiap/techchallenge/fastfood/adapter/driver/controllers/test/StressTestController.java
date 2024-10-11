@@ -11,7 +11,7 @@ public class StressTestController {
     @GetMapping("/stress-test")
     public ResponseEntity<Void> runStressTest() {
         // Aumenta o consumo de Memoria
-        byte[] memoryHog = new byte[300 * 1024]; 
+        byte[] memoryHog = new byte[800 * 1024]; 
         
         for (int i = 0; i < memoryHog.length; i++) {
             memoryHog[i] = (byte) (Math.random() * 256);
