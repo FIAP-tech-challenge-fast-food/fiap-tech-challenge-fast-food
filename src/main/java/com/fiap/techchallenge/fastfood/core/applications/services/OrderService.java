@@ -18,15 +18,17 @@ public class OrderService implements OrderServicePort {
     private final OrderValidator orderValidator;
     private final UserValidator userValidator;
     private final ProductRepositoryPort productRepositoryPort;
+    private final PaymentRepositoryPort paymentRepositoryPort;
 
     public OrderService(OrderRepositoryPort orderRepositoryPort, OrderItemRepositoryPort orderItemRepositoryPort,
             ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort,
-            UserRepositoryPort userRepositoryPort) {
+            UserRepositoryPort userRepositoryPort, PaymentRepositoryPort paymentRepositoryPort) {
         this.orderRepositoryPort = orderRepositoryPort;
         this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(),
                 new UserValidator(userRepositoryPort));
         this.userValidator = new UserValidator(userRepositoryPort);
         this.productRepositoryPort = productRepositoryPort;
+        this.paymentRepositoryPort = paymentRepositoryPort;
     }
 
     public Order generateOrder(Long userId, List<OrderItem> orderItems) {
@@ -112,5 +114,11 @@ public class OrderService implements OrderServicePort {
         this.orderValidator.validateOrderCanChangeStatusTo(orderId, OrderStatus.valueOf(orderStatus));
 
         this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus));
+    }
+
+    public Payment findPaymentByOrderId(Long orderId) {
+        this.orderValidator.validateOrderExistsById(orderId);
+
+        return this.paymentRepositoryPort.findByOrderId(orderId);
     }
 }

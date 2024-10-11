@@ -29,11 +29,11 @@ public class BeansConfig {
                                              OrderItemRepositoryPort orderItemRepositoryPort,
                                              ProductRepositoryPort productRepositoryPort,
                                              CategoryRepositoryPort categoryRepositoryPort,
-                                             UserRepositoryPort userRepositoryPort) {
+                                             UserRepositoryPort userRepositoryPort,
+                                             PaymentRepositoryPort paymentRepositoryPort) {
         return new OrderService(orderRepositoryPort, orderItemRepositoryPort, productRepositoryPort,
-                categoryRepositoryPort, userRepositoryPort);
+                categoryRepositoryPort, userRepositoryPort, paymentRepositoryPort);
     }
-
     @Bean
     public OrderItemServicePort orderItemServiceImpl(OrderItemRepositoryPort orderItemRepositoryPort, ProductRepositoryPort productRepositoryPort, CategoryRepositoryPort categoryRepositoryPort) {
         return new OrderItemService(orderItemRepositoryPort, productRepositoryPort, categoryRepositoryPort);
