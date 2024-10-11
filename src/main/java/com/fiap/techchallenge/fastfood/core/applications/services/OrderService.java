@@ -60,7 +60,7 @@ public class OrderService implements OrderServicePort {
         }
 
         orderItem.setProduct(product);
-        orderItem.setPrice(getOrderItemPrice(product.getPrice(), orderItem.getQuantity()));
+        orderItem.setPrice(product.getPrice());
         orderItem.setOrder(order);
 
         return orderItem;
