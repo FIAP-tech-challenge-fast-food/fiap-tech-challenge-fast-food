@@ -12,4 +12,6 @@ public interface PaymentServicePort {
 
     public Payment findByOrderId(Long orderId);
 
+    public Payment confirmPayment(String externalReference, String paymentStatus);
+
 }

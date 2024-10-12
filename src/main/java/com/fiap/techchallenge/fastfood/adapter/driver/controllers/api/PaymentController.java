@@ -1,10 +1,11 @@
-package com.fiap.techchallenge.fastfood.adapter.driver;
+package com.fiap.techchallenge.fastfood.adapter.driver.controllers.api;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.PaymentConfirmationRequest;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,16 @@ public class PaymentController {
         }
 
         return ResponseEntity.ok(paymentDtos);
+    }
+
+    @PostMapping("/confirm")
+    @Operation(summary = "Confirm payment", description = "Receives confirmation of a payment")
+    @ApiResponse(responseCode = "200", description = "")
+    public ResponseEntity<PaymentDto> confirmPayment(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be confirmed", required = true)
+                                                         @RequestBody PaymentConfirmationRequest paymentConfirmationRequest) {
+        Payment payment = this.paymentServicePort.confirmPayment(paymentConfirmationRequest.getExternalReference(), paymentConfirmationRequest.getPaymentStatus());
+
+        PaymentDto paymentDto = PaymentMapperDto.toDto(payment);
+        return ResponseEntity.ok(paymentDto);
     }
 }
