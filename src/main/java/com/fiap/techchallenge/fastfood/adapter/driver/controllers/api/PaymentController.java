@@ -6,26 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.PaymentConfirmationRequest;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.PaymentDto;
-import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreatePaymentRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.PaymentMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.MediaType;
-
-import java.net.URI;
 
 import io.swagger.v3.oas.annotations.*;
 
@@ -36,27 +29,6 @@ public class PaymentController {
 
     @Autowired
     private PaymentServicePort paymentServicePort;
-
-    @PostMapping
-    @Operation(summary = "Register a new payment", description = "Register a new payment in the system")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Payment created successfully"),
-            @ApiResponse(responseCode = "404", description = "Invalid order provided", content = @Content(examples = @ExampleObject(value = """
-                    {
-                      "timestamp": "2024-08-10T18:49:21.3340294",
-                      "message": "Order not found with id: 0",
-                      "details": "uri=/payments"
-                    }""")))
-    })
-    public ResponseEntity<PaymentDto> register(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be created", required = true) @RequestBody CreatePaymentRequest createPaymentRequest) {
-        Payment payment = paymentServicePort.registerPayment(PaymentMapperDto.toDomain(createPaymentRequest));
-
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(payment.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(PaymentMapperDto.toDto(payment));
-    }
 
     @GetMapping
     @Operation(summary = "Get payments", description = "Retrieve a list of payments")

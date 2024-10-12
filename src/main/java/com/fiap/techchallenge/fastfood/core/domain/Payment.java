@@ -40,6 +40,16 @@ public class Payment {
         this.createdAt = createdAt;
     }
 
+    public Payment(String externalReference, Order order, LocalDateTime createdAt, PaymentStatus paymentStatus) {
+        this.externalReference = externalReference;
+        this.order = order;
+        this.createdAt = createdAt;
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Payment() {
+    }
+
     public Long getId() {
         return id;
     }

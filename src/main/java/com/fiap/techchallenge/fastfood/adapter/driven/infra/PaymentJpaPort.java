@@ -5,6 +5,7 @@ import java.util.List;
 
 import java.util.stream.Collectors;
 
+import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,8 @@ public class PaymentJpaPort implements PaymentRepositoryPort {
     private PaymentRepository paymentRepository;
 
     @Override
-    public Payment registerPayment(String externalReference, Order order) {
-        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(new Payment(externalReference, order, LocalDateTime.now())));
+    public Payment registerPayment(Payment payment) {
+        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(payment));
 
         return PaymentMapper.toDomain(paymentEntity);
     }
