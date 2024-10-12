@@ -44,6 +44,7 @@ public class OrderMapper {
                 orderEntity.getId(),
                 user,
                 orderEntity.getOrderStatus(),
+                orderEntity.getReference(),
                 totalPrice,
                 orderEntity.getCreatedAt(),
                 orderItems
@@ -70,6 +71,7 @@ public class OrderMapper {
                 order.getId(),
                 userEntity,
                 order.getOrderStatus(),
+                order.getReference(),
                 order.getCreatedAt(),
                 null
         );
