@@ -1,7 +1,0 @@
-package com.fiap.techchallenge.fastfood.core.exceptions;
-
-public class PaymentDeclinedException extends RuntimeException {
-    public PaymentDeclinedException(Long orderId, String externalReference)  {
-        super("Payment was declined for orderId: " + orderId + " and external reference: " + externalReference);
-    }
-}

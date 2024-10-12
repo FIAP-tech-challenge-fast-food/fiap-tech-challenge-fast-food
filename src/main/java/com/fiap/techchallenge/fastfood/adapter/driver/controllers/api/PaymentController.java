@@ -6,26 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.PaymentConfirmationRequest;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.PaymentDto;
-import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreatePaymentRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.PaymentMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.MediaType;
-
-import java.net.URI;
 
 import io.swagger.v3.oas.annotations.*;
 
