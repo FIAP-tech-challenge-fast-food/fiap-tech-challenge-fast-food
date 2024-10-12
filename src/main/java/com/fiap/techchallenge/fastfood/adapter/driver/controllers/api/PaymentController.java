@@ -37,27 +37,6 @@ public class PaymentController {
     @Autowired
     private PaymentServicePort paymentServicePort;
 
-    @PostMapping
-    @Operation(summary = "Register a new payment", description = "Register a new payment in the system")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Payment created successfully"),
-            @ApiResponse(responseCode = "404", description = "Invalid order provided", content = @Content(examples = @ExampleObject(value = """
-                    {
-                      "timestamp": "2024-08-10T18:49:21.3340294",
-                      "message": "Order not found with id: 0",
-                      "details": "uri=/payments"
-                    }""")))
-    })
-    public ResponseEntity<PaymentDto> register(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payment details to be created", required = true) @RequestBody CreatePaymentRequest createPaymentRequest) {
-        Payment payment = paymentServicePort.registerPayment(PaymentMapperDto.toDomain(createPaymentRequest));
-
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(payment.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(PaymentMapperDto.toDto(payment));
-    }
-
     @GetMapping
     @Operation(summary = "Get payments", description = "Retrieve a list of payments")
     @ApiResponse(responseCode = "200", description = "List of payments retrieved successfully")
