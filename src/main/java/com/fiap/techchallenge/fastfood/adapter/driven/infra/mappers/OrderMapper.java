@@ -88,6 +88,7 @@ public class OrderMapper {
                 orderEntity.getId(),
                 UserMapper.toDomain(orderEntity.getUser()),
                 orderEntity.getOrderStatus(),
+                orderEntity.getReference(),
                 orderEntity.getCreatedAt(),
                 orderItems
         );
