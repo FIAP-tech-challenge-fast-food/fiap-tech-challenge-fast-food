@@ -7,9 +7,9 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.UserRepositoryPor
 import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
+import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 import com.fiap.techchallenge.fastfood.core.exceptions.PaymentRefusedException;
 import com.fiap.techchallenge.fastfood.core.utils.UUIDGenerator;
-import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderValidator;
 import com.fiap.techchallenge.fastfood.core.validators.PaymentValidator;
@@ -29,7 +29,7 @@ public class PaymentService implements PaymentServicePort {
         this.paymentRepositoryPort = paymentRepositoryPort;
         this.orderRepositoryPort = orderRepositoryPort;
         this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(), new UserValidator(userRepositoryPort));
-        this.paymentValidator = new PaymentValidator(paymentRepositoryPort);
+        this.paymentValidator = new PaymentValidator();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PaymentService implements PaymentServicePort {
     }
 
     @Override
-    public Payment findByOrderId(Long orderId) {    
+    public Payment findByOrderId(Long orderId) {
         this.orderValidator.validateOrderExistsById(orderId);
         return this.paymentRepositoryPort.findByOrderId(orderId);
     }
