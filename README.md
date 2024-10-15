@@ -185,3 +185,9 @@ Este script de shell realiza um teste de estresse enviando um número especifica
    ```
    - **<URL\>**: A URL que você deseja testar.
    - **[NUM_REQUESTS]**: O número de requisições a serem enviadas (padrão é 1000 se não especificado).
+
+
+## Vídeo e roteiro para utilização da API
+
+- [Ver vídeo](https://www.youtube.com/watch?v=PZgMOtaUxwM)
+- [Roteiro](https://docs.google.com/document/d/1Wg0slqZXJTk76idnDiL-o7GOkb0VCDOqpnGyVJvtJ8U/edit?usp=sharing)
