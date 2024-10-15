@@ -4,13 +4,18 @@ import com.fiap.techchallenge.fastfood.core.applications.ports.OrderRepositoryPo
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentServicePort;
 import com.fiap.techchallenge.fastfood.core.applications.ports.UserRepositoryPort;
+import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.OrderStatus;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
+import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
+import com.fiap.techchallenge.fastfood.core.exceptions.PaymentRefusedException;
+import com.fiap.techchallenge.fastfood.core.utils.UUIDGenerator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderItemValidator;
 import com.fiap.techchallenge.fastfood.core.validators.OrderValidator;
 import com.fiap.techchallenge.fastfood.core.validators.PaymentValidator;
 import com.fiap.techchallenge.fastfood.core.validators.UserValidator;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PaymentService implements PaymentServicePort {
@@ -24,25 +29,20 @@ public class PaymentService implements PaymentServicePort {
         this.paymentRepositoryPort = paymentRepositoryPort;
         this.orderRepositoryPort = orderRepositoryPort;
         this.orderValidator = new OrderValidator(orderRepositoryPort, new OrderItemValidator(), new UserValidator(userRepositoryPort));
-        this.paymentValidator = new PaymentValidator(paymentRepositoryPort);
+        this.paymentValidator = new PaymentValidator();
     }
 
     @Override
-    public Payment registerPayment(Payment payment) {
-        PaymentValidator.validate(payment);
+    public Payment registerPayment(Order order) {
+        this.orderValidator.validateOrderExistsById(order.getId());
 
-        Long orderId = payment.getOrder().getId();
-        this.orderValidator.validateOrderExistsById(orderId);
+        Payment payment = new Payment();
+        payment.setOrder(order);
+        payment.setCreatedAt(LocalDateTime.now());
+        payment.setPaymentStatus(PaymentStatus.PENDING);
+        payment.setExternalReference(generatePaymentExternalReference());
 
-        this.paymentValidator.validateOrderHasPayment(orderId);
-
-        this.orderValidator.validateOrderCanChangeStatusTo(orderId, OrderStatus.PAID);
-
-        Payment paymentCreated = this.paymentRepositoryPort.registerPayment(payment.getExternalReference(), payment.getOrder());
-
-        updateOrderStatusAccordingToPayment(payment.getExternalReference(), payment.getOrder().getId());
-
-        return paymentCreated;
+        return this.paymentRepositoryPort.registerPayment(payment);
     }
 
     @Override
@@ -51,17 +51,34 @@ public class PaymentService implements PaymentServicePort {
     }
 
     @Override
-    public Payment findByOrderId(Long orderId) {    
+    public Payment findByOrderId(Long orderId) {
         this.orderValidator.validateOrderExistsById(orderId);
         return this.paymentRepositoryPort.findByOrderId(orderId);
     }
-    
-    private void updateOrderStatusAccordingToPayment(String externalReference, Long orderId) {
-        if (externalReference != null && !externalReference.isEmpty()) {
+
+    @Override
+    public Payment confirmPayment(String externalReference, String paymentStatus) {
+        Payment payment = this.paymentRepositoryPort.findByExternalReference(externalReference);
+        PaymentValidator.validate(payment);
+
+        this.paymentValidator.validatePaymentStatus(paymentStatus);
+        payment.setPaymentStatus(PaymentStatus.valueOf(paymentStatus));
+
+        updateOrderStatusAccordingToPayment(PaymentStatus.valueOf(paymentStatus), externalReference, payment.getOrder().getId());
+
+        return this.paymentRepositoryPort.save(payment);
+    }
+
+    private void updateOrderStatusAccordingToPayment(PaymentStatus paymentStatus, String externalReference, Long orderId) {
+        if (PaymentStatus.APPROVED.equals(paymentStatus)) {
             this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.PAID);
-        } else {
-            this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.CANCELED);
+        } else if (PaymentStatus.REFUSED.equals(paymentStatus)) {
+            this.orderRepositoryPort.updateOrderStatus(orderId, OrderStatus.WAITING_PAYMENT);
+            throw new PaymentRefusedException(orderId, externalReference);
         }
     }
 
+    private String generatePaymentExternalReference() {
+        return UUIDGenerator.generateUUID();
+    }
 }

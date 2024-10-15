@@ -1,12 +1,15 @@
-package com.fiap.techchallenge.fastfood.adapter.driver;
+package com.fiap.techchallenge.fastfood.adapter.driver.controllers.api;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.OrderDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.dtos.PaymentDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.CreateOrderRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.UpdateOrderStatusRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderItemMapperRequest;
 import com.fiap.techchallenge.fastfood.adapter.driver.mappers.OrderMapperDto;
+import com.fiap.techchallenge.fastfood.adapter.driver.mappers.PaymentMapperDto;
 import com.fiap.techchallenge.fastfood.core.applications.ports.OrderServicePort;
 import com.fiap.techchallenge.fastfood.core.domain.Order;
+import com.fiap.techchallenge.fastfood.core.domain.Payment;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -119,5 +122,23 @@ public class OrderController {
         orderServicePort.updateOrderStatus(id, request.getNewStatus());
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping(path = "/{id}/payment-status", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get payment status by order ID", description = "Retrieve the payment status for a specific order using its unique ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Payment status retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Payment not found", content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "timestamp": "2024-09-30T18:38:09.8767397",
+                      "message": "Payment not found for order id: 1",
+                      "details": "uri=/orders/1/payment-status"
+                    }""")))
+    })
+    public ResponseEntity<PaymentDto> findPaymentByOrderId(
+            @Parameter(description = "ID of the order to retrieve the payment status", required = true) @PathVariable Long id) {
+
+        Payment payment = orderServicePort.findPaymentByOrderId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(PaymentMapperDto.toDto(payment));
     }
 }

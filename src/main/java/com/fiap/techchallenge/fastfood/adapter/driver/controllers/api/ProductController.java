@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.fastfood.adapter.driver;
+package com.fiap.techchallenge.fastfood.adapter.driver.controllers.api;
 
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.ProductDto;
 import com.fiap.techchallenge.fastfood.adapter.driver.dtos.requests.ProductRequest;
@@ -110,9 +110,9 @@ public class ProductController {
                       "details": "uri=/products/1000"
                     }""")))
     })
-    public ResponseEntity<ProductDto> update(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be updated", required = true) @RequestBody ProductDto productDto,
+    public ResponseEntity<ProductDto> update(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Product details to be updated", required = true) @RequestBody ProductRequest request,
                                              @Parameter(description = "ID of the product to be updated", required = true) @PathVariable Long id) {
-        Product product = this.productServicePort.update(ProductMapperDto.toDomain(productDto), id);
+        Product product = this.productServicePort.update(ProductMapperDto.toDomain(request), id);
 
         return ResponseEntity.ok().body(ProductMapperDto.toDto(product));
     }

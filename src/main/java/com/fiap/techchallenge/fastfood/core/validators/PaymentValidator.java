@@ -1,15 +1,11 @@
 package com.fiap.techchallenge.fastfood.core.validators;
 
-import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
-import com.fiap.techchallenge.fastfood.core.exceptions.OrderHasPaymentException;
+import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 
 public class PaymentValidator {
 
-    PaymentRepositoryPort paymentRepositoryPort;
-
-    public PaymentValidator(PaymentRepositoryPort paymentRepositoryPort) {
-        this.paymentRepositoryPort = paymentRepositoryPort;
+    public PaymentValidator() {
     }
 
     public static void validate(Payment payment) {
@@ -18,9 +14,13 @@ public class PaymentValidator {
         }
     }
 
-    public void validateOrderHasPayment(Long orderId) {
-        if(this.paymentRepositoryPort.findByOrderId(orderId) != null) {
-            throw new OrderHasPaymentException(orderId);
+    public void validatePaymentStatus(String paymentStatus) {
+        if (paymentStatus == null) {
+            throw new IllegalArgumentException("PaymentStatus cannot be null");
+        }
+
+        if (!(PaymentStatus.APPROVED.name().equals(paymentStatus) || PaymentStatus.REFUSED.name().equals(paymentStatus))) {
+            throw new IllegalArgumentException("PaymentStatus must be APPROVED or REFUSED");
         }
     }
 

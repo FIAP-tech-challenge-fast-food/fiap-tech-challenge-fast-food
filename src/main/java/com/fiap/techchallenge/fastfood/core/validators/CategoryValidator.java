@@ -12,7 +12,7 @@ public class CategoryValidator {
         this.categoryRepositoryPort = categoryRepositoryPort;
     }
 
-    public void validateCategoryAlreadyExists(String desc) {
+    public void validateCategoryDescriptionAlreadyExists(String desc) {
         if (categoryRepositoryPort.getCategoryByDescription(desc) != null) {
             throw new CategoryAlreadyExistsException(desc);
         }

@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -12,18 +11,17 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.PaymentEnti
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.PaymentMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.PaymentRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
-import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
 @Component
 public class PaymentJpaPort implements PaymentRepositoryPort {
-    
+
     @Autowired
     private PaymentRepository paymentRepository;
 
     @Override
-    public Payment registerPayment(String externalReference, Order order) {
-        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(new Payment(externalReference, order, LocalDateTime.now())));
+    public Payment registerPayment(Payment payment) {
+        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(payment));
 
         return PaymentMapper.toDomain(paymentEntity);
     }
@@ -40,8 +38,21 @@ public class PaymentJpaPort implements PaymentRepositoryPort {
     @Override
     public Payment findByOrderId(Long orderId) {
         PaymentEntity paymentEntity = this.paymentRepository.findByOrderId(orderId);
-        
+
         return PaymentMapper.toDomain(paymentEntity);
     }
 
+    @Override
+    public Payment save(Payment payment) {
+        PaymentEntity paymentEntity = this.paymentRepository.save(PaymentMapper.toEntity(payment));
+
+        return PaymentMapper.toDomain(paymentEntity);
+    }
+
+    @Override
+    public Payment findByExternalReference(String externalReference) {
+        PaymentEntity paymentEntity = this.paymentRepository.findByExternalReference(externalReference);
+
+        return PaymentMapper.toDomain(paymentEntity);
+    }
 }

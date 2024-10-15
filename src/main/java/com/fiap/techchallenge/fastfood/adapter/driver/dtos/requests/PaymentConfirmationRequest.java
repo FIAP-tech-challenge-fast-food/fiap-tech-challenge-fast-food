@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CreatePaymentRequest {
+public class PaymentConfirmationRequest {
 
     private String externalReference;
 
-    private Long orderId;
+    private String paymentStatus;
 
 }

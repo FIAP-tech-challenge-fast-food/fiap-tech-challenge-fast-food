@@ -8,14 +8,16 @@ public class Order {
     private Long id;
     private User user;
     private OrderStatus orderStatus;
+    private String reference;
     private Double totalPrice;
     private LocalDateTime createdAt;
     private List<OrderItem> orderItems;
 
-    public Order(Long id, User user, OrderStatus orderStatus, Double totalPrice, LocalDateTime createdAt, List<OrderItem> orderItems) {
+    public Order(Long id, User user, OrderStatus orderStatus, String reference, Double totalPrice, LocalDateTime createdAt, List<OrderItem> orderItems) {
         this.id = id;
         this.user = user;
         this.orderStatus = orderStatus;
+        this.reference = reference;
         this.totalPrice = totalPrice;
         this.createdAt = createdAt;
         this.orderItems = orderItems;
@@ -42,6 +44,15 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    public Order(Long id, User user, OrderStatus orderStatus, String reference, LocalDateTime createdAt, List<OrderItem> orderItems) {
+        this.id = id;
+        this.user = user;
+        this.orderStatus = orderStatus;
+        this.reference = reference;
+        this.createdAt = createdAt;
+        this.orderItems = orderItems;
+    }
+
     public Long getId() {
         return id;
     }
@@ -64,6 +75,14 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public Double getTotalPrice() {

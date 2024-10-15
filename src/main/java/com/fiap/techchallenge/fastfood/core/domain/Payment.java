@@ -12,6 +12,8 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
+    private PaymentStatus paymentStatus;
+
     public Payment(String externalReference, Order order) {
         this.externalReference = externalReference;
         this.order = order;
@@ -24,10 +26,28 @@ public class Payment {
         this.createdAt = createdAt;
     }
 
+    public Payment(Long id, String externalReference, Order order, LocalDateTime createdAt, PaymentStatus paymentStatus) {
+        this.id = id;
+        this.externalReference = externalReference;
+        this.order = order;
+        this.createdAt = createdAt;
+        this.paymentStatus = paymentStatus;
+    }
+
     public Payment(String externalReference, Order order, LocalDateTime createdAt) {
         this.externalReference = externalReference;
         this.order = order;
         this.createdAt = createdAt;
+    }
+
+    public Payment(String externalReference, Order order, LocalDateTime createdAt, PaymentStatus paymentStatus) {
+        this.externalReference = externalReference;
+        this.order = order;
+        this.createdAt = createdAt;
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Payment() {
     }
 
     public Long getId() {
@@ -53,6 +73,14 @@ public class Payment {
     }
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
 }
