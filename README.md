@@ -29,6 +29,9 @@ Execute o projeto e [clique aqui](http://localhost:8080/swagger-ui/index.html#/)
 
 [Diagrama DDD](https://miro.com/app/board/uXjVK622Unk=/?share_link_id=942343997513)
 
+## Desenho da arquitetura
+![image](https://github.com/user-attachments/assets/49d76067-a1ea-4368-9a68-5cf0ea7a1dd0)
+
 <br>
 <br>
 
