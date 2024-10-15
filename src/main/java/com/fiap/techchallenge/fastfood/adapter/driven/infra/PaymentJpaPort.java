@@ -1,11 +1,9 @@
 package com.fiap.techchallenge.fastfood.adapter.driven.infra;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
-import com.fiap.techchallenge.fastfood.core.domain.PaymentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +11,11 @@ import com.fiap.techchallenge.fastfood.adapter.driven.infra.entities.PaymentEnti
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.mappers.PaymentMapper;
 import com.fiap.techchallenge.fastfood.adapter.driven.infra.repositories.PaymentRepository;
 import com.fiap.techchallenge.fastfood.core.applications.ports.PaymentRepositoryPort;
-import com.fiap.techchallenge.fastfood.core.domain.Order;
 import com.fiap.techchallenge.fastfood.core.domain.Payment;
 
 @Component
 public class PaymentJpaPort implements PaymentRepositoryPort {
-    
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -41,7 +38,7 @@ public class PaymentJpaPort implements PaymentRepositoryPort {
     @Override
     public Payment findByOrderId(Long orderId) {
         PaymentEntity paymentEntity = this.paymentRepository.findByOrderId(orderId);
-        
+
         return PaymentMapper.toDomain(paymentEntity);
     }
 
@@ -58,6 +55,4 @@ public class PaymentJpaPort implements PaymentRepositoryPort {
 
         return PaymentMapper.toDomain(paymentEntity);
     }
-
-
 }
